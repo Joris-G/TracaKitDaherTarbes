@@ -7,7 +7,7 @@ $dateDra = $_GET['dateDra'];
 $datePol = $_GET['datePol'];
 $date18 = $_GET['date18'];
 
-$con = new PDO('mysql:host=localhost:3306;dbname=traca;charset=utf8', 'root', '');
+$con = new PDO('mysql:host=localhost:3306;dbname=traca;charset=utf8', 'root', 'root');
 $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 if (!$con) {
   die('Could not connect: ' . mysqli_error($con));

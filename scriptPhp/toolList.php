@@ -12,7 +12,7 @@ if ($types === 'tool'){
 }
 $con = new PDO('mysql:host=localhost:3306;dbname=traca;charset=utf8mb4',
 'root', 
-'');
+'root');
 $query = $con->prepare("SELECT * FROM $table WHERE $foreign = ?");
 $query->execute([$_GET['filter']]);
 $items = $query->fetchAll();

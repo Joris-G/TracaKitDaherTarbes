@@ -1,7 +1,7 @@
 <?php 
 
 $sql = 'INSERT INTO `t_moulage` (numOT, dateLimDrap, dateLimPol,dateLim18) VALUES (:toolNumber,:dateLimDra,:dateLimPol,:dateLim18)';
-$con = new PDO('mysql:host=localhost:3306;dbname=traca;charset=utf8mb4','root', '');
+$con = new PDO('mysql:host=localhost:3306;dbname=traca;charset=utf8mb4','root', 'root');
 $query = $con->prepare($sql);
 $query->bindParam(':toolNumber', $_GET['tool']);
 $query->bindParam(':dateLimDra', $_GET['dateDra']);
