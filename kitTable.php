@@ -27,7 +27,23 @@
                 </tr>
             </tfoot>
         </table>
-        <OBJECT ID="WebBrowser" WIDTH=0 HEIGHT=0 CLASSID="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2"></OBJECT>
+
+        <!-- Ajouter un kit en manuel -->
+        <form>
+            <div>
+                <label for="pickerDate18">Date de péremption à -18°C</label>
+                <input id="pickerDate18" type="datetime-local" name="pickerDate18">
+            </div>
+            <div>
+                <label for="pickerDateDra">Date limite de drapage</label>
+                <input id="pickerDateDra" type="datetime-local" name="pickerDateDra">
+            </div>
+            <div>
+                <label for="pickerDatePol">Date limite de polymérisation</label>
+                <input id="pickerDatePol" type="datetime-local" name="pickerDatePol">
+            </div>
+        </form>
+
         <input id="impression" name="impression" type="button" onclick="imprimer_page('tableauRecap','OT098525')" value="Imprimer cette page" />
     </div>
 
