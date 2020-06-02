@@ -1,5 +1,6 @@
 <?php
 require '../vendor/autoload.php';
+require '../Connexion.php';
 $success = 0;
 $msg = "Une erreur est survenue (script.php)";
 $data = [];
@@ -10,12 +11,13 @@ if ($types === 'tool'){
     $table = 't_tools';
     $foreign = 'programId';
 }
-$con = new PDO('mysql:host=localhost:3306;dbname=traca;charset=utf8mb4',
-'root', 
-'root');
-$query = $con->prepare("SELECT * FROM $table WHERE $foreign = ?");
-$query->execute([$_GET['filter']]);
-$items = $query->fetchAll();
+//Rappel de l'objet connexion à la base avec passage de la requete et des paramètres
+$con = new Connexion();
+$sql="SELECT * FROM $table WHERE $foreign = ?";
+$items= $con->createQuery($sql, [$_GET['filter']]);
+//Transformation de l'objet en tableau
+$articles= $items->fetchAll();
+//Passage du tableau en JSON pour transfert de la raquete AJAX
 header('content-Type: application/json');
 echo json_encode(array_map(function($item){
 return[
@@ -23,5 +25,5 @@ return[
         'label' => $item['desOutillage'],
         'toolSap' => $item['numOtSap']
     ];
-}, $items));
+}, $articles));
 ?>

@@ -10,7 +10,7 @@
     <select id="programs" class='programs' name='programs' data-target='#tool' data-source='/AppliTracaDaherTarbes/scriptPhp/toolList.php?types=tool&filter=$prog'>
         <option value="0">Selectionner un programme avion</option>
         <?php foreach ($programs as $program){?>
-         <option value="<?= $program->ID ?>"><?= $program->Program_Name; ?></option>
+         <option value="<?= $program['ID'] ?>"><?= $program['Program_Name']; ?></option>
         <?php } ?>
     </select>
 
