@@ -1,0 +1,9 @@
+{
+    "name": "joris/traca",
+    "autoload":{
+        "psr-4":{
+            "App\\":"class/"
+        }
+    },
+    "require": {}
+}

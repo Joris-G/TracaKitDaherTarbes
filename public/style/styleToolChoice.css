@@ -1,0 +1,17 @@
+#printable{
+    display: block;
+}
+#programChoice {
+    display: inline;
+    margin: 10px;
+  }
+#programs{
+    opacity: 1;
+}
+select{
+    border-radius: 50px;
+    text-align-last: center;
+}
+select-selected {
+    background-color: DodgerBlue;
+  }

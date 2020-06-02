@@ -1,0 +1,13 @@
+@font-face {
+	font-family: "Raleway";
+    src: url('../src/font/Raleway-Regular.ttf');
+}
+
+:root {
+  --my-color-bleuDaher: rgb(255,255,255);
+  --my-color-rougeDaher: rgb(230,0,50);
+
+  --my-font-daher : 'Raleway';
+
+  --my-bg-image : url("../src/img/fond.jpg");
+}

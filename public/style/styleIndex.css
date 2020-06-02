@@ -1,0 +1,115 @@
+@import 'styleDefault.css';
+
+html{
+    min-height:100%;
+}
+
+body {
+    display:block;
+    margin: 0px;
+    padding: 0px;
+    font-family : var(--my-font-daher);
+    font-size : 20px;
+    color : white;
+    background-image: var(--my-bg-image);
+    background-attachment:fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    backdrop-filter: brightness(60%);
+    background-position: center;
+    position: absolute;
+    left: 0;right: 0;
+    overflow: hidden;
+    height:100%;
+}
+#menu{
+    position:relative;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    
+}
+#recap{
+    float: left;
+    background: pink;
+    opacity: 0.5;
+    width: 200px;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    overflow:hidden;
+    height: 100%;
+    margin: 1%;
+    border: 2px solid var(my-color-rougeDaher);
+    border-radius: 5px;
+    display: none;
+}
+#recap:hover{
+    background: white;
+    color: blue;
+}
+#content{
+    display: block;
+    overflow:auto;
+    background: rgba(255, 255, 255, 0.3);
+    height: 75%;
+    margin: 5%;
+    padding: 10px;
+    border-radius: 5px;
+    color: rgb(255, 255, 255);
+}
+#programs{
+    opacity: 1;
+}
+#divScan{
+    display: block;
+
+    margin: 10px;
+}
+.hidden {
+    position: absolute;
+    left: -10000em;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+ }
+
+#tableauRecap{
+    text-align : center;
+    border: 0px solid;
+    padding: 20px;
+    
+}
+#tableauRecap tbody td{
+    font-size: 13px;
+}
+
+
+#btnScan{
+    border: 0px solid black;
+    border-radius: 10px;
+}
+
+
+#impression{
+    border-radius: 10px; 
+}
+
+#Profil{
+	color:	white;
+	text-align:	center;
+}
+.bt-supprimer{
+    background-color:crimson;
+    padding:2px;
+    text-align:center;
+    vertical-allign:middle;
+    margin:3px;
+    display:inline-block;
+    border-radius:5px;
+    border:1px solid darkred;
+    cursor:pointer;
+  }

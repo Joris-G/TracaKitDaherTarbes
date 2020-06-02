@@ -1,0 +1,40 @@
+@import 'styleDefault.css';
+
+body{
+    margin: 0px;
+    padding: 0px;
+    font-family : var(--my-font-daher);
+}
+#logoDaher{
+    position: relative;
+    float: left;
+}
+#titre{
+    text-align: center;
+    clear: both;
+    font-size: 30px;
+    text-transform : uppercase;
+}
+#moldingInfo{
+    margin: 20px;
+    font-size: 20px;
+}
+#tableauRecap2{
+    border-spacing: 10px 5px;
+    text-align : center;
+    margin : 0 auto;
+}
+
+#tableauRecap2 th{
+    font-size: 15px;
+}
+#tableauRecap2 tbody td{
+    font-size: 10px;
+}
+tfoot > * {
+    border-spacing: 10px;
+    font-size: 20px;
+}
+#tableauRecap2 tf td{
+    font-size: 20px;
+}

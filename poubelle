@@ -1,0 +1,61 @@
+<!-- <?php
+            $sql= 'SELECT * FROM `t_program`';
+            if($DB){
+            $programs = $DB->query($sql,null);
+            header('content-Type: application/json');
+		    echo json_encode(array_map(function($program){
+			return[
+					'value' => $program['ID'], 
+					'label' => $program['Program_Name'],
+				];
+			}, $programs));
+            foreach ($programs as $program) {
+                echo("<option value='".$program."'>".$program."</option>");
+            }}
+        ?> -->
+
+CONNEXION
+
+class Connexion {
+	private $host = 'localhost:3306';
+	private $login = 'root';
+	private $pass = '';
+	private $database = 'traca';
+	private $db;
+
+	public function __construct($host = null,$database=null, $login =null, $pass=null){
+		if($host != null){
+			$this->host = $host;
+			$this->login = $login;
+			$this->pass = $pass;
+			$this->database = $database;
+		}
+
+	try{
+		$this->db = new PDO(
+			'mysql:host='.$this->host.';dbname='.$this->database.';charset=utf8mb4', 
+			$this->login, 
+			$this->pass,
+			array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES UTF8')
+		);
+		$this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$this->db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
+	}catch (PDOException $e)
+	{
+		$msg = 'ERREUR PDO dans ' . $e->getFile() . ' L.' . $e->getLine() . ' : ' . $e->getMessage();
+		die($msg);
+	}
+	return $this->db;
+}
+	 public function query($sql){
+		require '../../vendor/autoload.php';
+	 	$stmt = $this->db->prepare($sql);
+		$result = $stmt->execute();
+		$result->fetch();
+		return $result;
+	// 	return $items = $stmt->fetchAll();
+	// 	$stmt->closeCursor();
+	// 	$stmt=NULL;
+	 }
+}
+         
