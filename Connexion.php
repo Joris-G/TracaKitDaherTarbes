@@ -3,7 +3,7 @@
 class Connexion {
 	private $host = 'localhost:3306';
 	private $login = 'root';
-	private $pass = 'root';
+	private $pass = '';
 	private $database = 'traca';
 	private $db;
 

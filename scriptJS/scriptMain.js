@@ -1,7 +1,34 @@
 var tbl = document.getElementById('tableauRecap');
 var divTbl = document.getElementById('printable');
 var username = document.getElementById('user').innerHTML;
+var btnAddKitManualMode = document.getElementById('btnAddKitManualMode');
 var idKitTable = new Array();
+
+btnAddKitManualMode.addEventListener('click', addKitManualMode);
+
+function addKitManualMode() {
+    var manuKitDesArticle = document.getElementById('desArticle')
+    var manuKitWorkOrder = document.getElementById('workOrder')
+    var manuKitDate18 = document.getElementById('pickerDate18')
+    var manuKitDateDra = document.getElementById('pickerDateDra')
+    var manuKitDatePol = document.getElementById('pickerDatePol')
+    if (!manuKitDesArticle.value == 0 && 
+        !manuKitWorkOrder.value == 0 && 
+        !manuKitDate18.value == 0 && 
+        !manuKitDateDra.value == 0 && 
+        !manuKitDatePol.value == 0){
+            var manuKit = new Kit('',manuKitWorkOrder.value,new Date(manuKitDate18.value),new Date(manuKitDateDra.value),new Date(manuKitDatePol.value))
+            manuKit.registerInBase(toolSap,1)
+            displayKitOnTable(manuKit)
+            manuKitDesArticle.value = ""
+            manuKitWorkOrder.value = ""
+            manuKitDate18.value = ""
+            manuKitDateDra.value = ""
+            manuKitDatePol.value = ""
+    }else{
+        alert('Veuiller remplir correctement tous les champs !!')
+    }
+}
 
 function displayKitOnTable(kit){
     divTbl.style.display= null;
@@ -56,8 +83,6 @@ function displayKitOnTable(kit){
                     expired = true
                     }
                     break
-                    case 5:
-                        //alert(kit.kitId)
                 default:
                     alert('case défaut')
                     break                   
@@ -65,7 +90,6 @@ function displayKitOnTable(kit){
             return result1
         };
         if (j==5){
-            //alert(kit.kitId)
             var cellText = document.createElement("button");
             cellText.className = "deleteLine"
             cellText.innerHTML = "Supprimer"
@@ -101,11 +125,11 @@ function displayKitOnTable(kit){
     tfDateDra.innerHTML = dateDraLimTot.getDate() + '-' + (dateDraLimTot.getMonth()+1) + '-' + dateDraLimTot.getFullYear() + ' à ' + dateDraLimTot.getHours() + ':' + dateDraLimTot.getMinutes();
     tfDatePol.innerHTML = datePolLimTot.getDate() + '-' + (datePolLimTot.getMonth()+1) + '-' + datePolLimTot.getFullYear() + ' à ' + datePolLimTot.getHours() + ':' + datePolLimTot.getMinutes();
 }
-var btnScan = document.getElementById('btnScan');
+var btnScan = document.getElementById('btnScan')
 if(btnScan)   {
     btnScan.addEventListener('click', focusTxtArea)
 }
-var $inputKit = document.getElementById('kitInput');
+var $inputKit = document.getElementById('kitInput')
 if($inputKit){
     $inputKit.addEventListener("focus", focusScanAction);
     $inputKit.addEventListener("focusout", exitFocusScanAction);
@@ -118,22 +142,25 @@ function focusScanAction(){
     btnScan.style.backgroundColor = "green";
 }
 function focusTxtArea(){
-    $inputKit.focus();
+    $inputKit.focus()
 }
-
+function exitFocusTxtArea(){
+    $inputKit.blur()
+}
 function scanAction (event){
     if (event.keyCode === 13) {
-    var kit = traitementDouchette($inputKit.value);
-    displayKitOnTable(kit);
-    $inputKit.value = '';
-    focusTxtArea()
+        exitFocusTxtArea()
+        var kit = traitementDouchette($inputKit.value)
+        displayKitOnTable(kit)
+        $inputKit.value = ''
+        window.setTimeout(focusTxtArea(), 3000)
     }
 }
 
-var dateFictive = new Date(2099,1,1);
-var date18LimTot = dateFictive;
-var dateDraLimTot = dateFictive;
-var datePolLimTot = dateFictive;
+var dateFictive = new Date(2099,1,1)
+var date18LimTot = dateFictive
+var dateDraLimTot = dateFictive
+var datePolLimTot = dateFictive
 
 function traitementDouchette(){
     //Tableau des index de colonnes de la Fiche de Vie scanner, "RefSap : "
@@ -182,61 +209,36 @@ function traitementDouchette(){
     idKitTable.push(kit.kitId)
     return kit
 }
-// TraitementDouchette["__class"] = "TraitementDouchette";
-
-// function imprimer(divName) {
-//     var printContents = document.getElementById(divName).innerHTML;    
-//  var originalContents = document.body.innerHTML;      
-//  document.body.innerHTML = printContents;     
-//  window.print();     
-//  document.body.innerHTML = originalContents;
-//  }
 
 function imprimer_page(elem, OT){
     var molding = new Molding(toolSap, date18LimTot, dateDraLimTot, datePolLimTot)
     molding.saveMolding()
-     nodeToCopy = document.getElementById('tableauRecap').innerHTML
-     var mywindow = window.open("../public/printSheet.php","Fiche synthèse traçabilité")
-     mywindow.onload = function() {
-         mywindow.document.getElementById('tableauRecap2').innerHTML = nodeToCopy
-         //mywindow.document.getElementById('tableauRecap2').innerHTML
-         mywindow.document.getElementsByClassName("deleteLine").style.display = "none"
-        //  function deleteCol(el,n){
-        //      var r=(typeof el==='string'?document.getElementById(el):el).rows,i=r.length;
-        //      while(i--){
-        //          r[i].deleteCell(n);
-        //     }
-        // }
-        // deleteCol("deleteLine")
+    var nodeToCopy = document.getElementById('tableauRecap').innerHTML
+    var mywindow = window.open("../public/printSheet.php","Fiche synthèse traçabilité")
+    mywindow.onload = function() {
+        mywindow.document.getElementById('tableauRecap2').innerHTML = nodeToCopy
+        //mywindow.document.getElementsByClassName("deleteLine").style.display = "none"        
 
+        var dateToday = new Date()
+        var dateString = 'Date d\'enregistrement : ' + dateToday.getDate() + '/' + (dateToday.getMonth()+1) + '/' + dateToday.getFullYear() ;
+        var tool = 'Outillage : OT0' + toolSap
+        var compagnon = 'Moulé par : ' + username
+        var moldingId = 'ID du moulage : ' + molding.idMolding
 
-    //     //var title = 'feuille de traçabilité';
-         var dateToday = new Date()
-         var dateString = 'Date d\'enregistrement : ' + dateToday.getDate() + '/' + (dateToday.getMonth()+1) + '/' + dateToday.getFullYear() ;
-         var tool = 'Outillage : OT0' + toolSap
-         var compagnon = 'Moulé par : ' + username
-         var moldingId = 'ID du moulage : ' + molding.idMolding
+        var divTool = mywindow.document.getElementById('tool');
+        var divCompagnon = mywindow.document.getElementById('compagnon');
+        var divMoldingDate = mywindow.document.getElementById('moldingDate');
+        var divMoldingId = mywindow.document.getElementById('moldingId');
 
-    //     //var divTitle = mywindow.document.getElementById('title');
-         var divTool = mywindow.document.getElementById('tool');
-         var divCompagnon = mywindow.document.getElementById('compagnon');
-         var divMoldingDate = mywindow.document.getElementById('moldingDate');
-         var divMoldingId = mywindow.document.getElementById('moldingId');
-
-    //     //divTitle.innerHTML = title;
-         divTool.innerHTML = tool;
-         divCompagnon.innerHTML = compagnon;
-         divMoldingDate.innerHTML = dateString;
-         divMoldingId.innerHTML = moldingId;
-
-
+        divTool.innerHTML = tool;
+        divCompagnon.innerHTML = compagnon;
+        divMoldingDate.innerHTML = dateString;
+        divMoldingId.innerHTML = moldingId;
+        mywindow.print();
     }
+    
+    
 }
-
-   // mywindow.print();
-
-    //WebBrowser.ExecWB(6,2,3,0);
-
 function CheckDataIndex(Chaine,TbIndex,Sep){
     var DatasQR="";
     for (var i = 0; i < TbIndex.length; i++) {

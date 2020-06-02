@@ -9,5 +9,5 @@ $query->bindParam(':dateLimPol', $_GET['datePol']);
 $query->bindParam(':dateLim18', $_GET['date18']);
 $query->execute();
 $idMolding = $con->lastInsertId();
-return $idMolding 
+echo($idMolding);
 ?>

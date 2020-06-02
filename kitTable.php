@@ -30,17 +30,29 @@
 
         <!-- Ajouter un kit en manuel -->
         <form>
-            <div>
+            <div class="title">Ajout manuel d'un kit</div>
+            <div class="lblInput">
+                <label for="desArticle">Article</label>
+                <input id="desArticle" type="text" name="desArticle">
+            </div>
+            <div class="lblInput">
+                <label for="workOrder">Numéro d'OF</label>
+                <input id="workOrder" type="text" name="workOrder">
+            </div>
+            <div class="lblInput">
                 <label for="pickerDate18">Date de péremption à -18°C</label>
                 <input id="pickerDate18" type="datetime-local" name="pickerDate18">
             </div>
-            <div>
+            <div class="lblInput">
                 <label for="pickerDateDra">Date limite de drapage</label>
                 <input id="pickerDateDra" type="datetime-local" name="pickerDateDra">
             </div>
-            <div>
+            <div class="lblInput">
                 <label for="pickerDatePol">Date limite de polymérisation</label>
                 <input id="pickerDatePol" type="datetime-local" name="pickerDatePol">
+            </div>
+            <div class="lblInput">
+                <input id="btnAddKitManualMode" type="button" name="btnAddKit" value="AJOUTER">
             </div>
         </form>
 
