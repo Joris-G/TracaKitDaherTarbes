@@ -39,18 +39,28 @@ class Connexion {
 	public function createQuery($sql, $parameters = null)
     {
         if ($parameters) {
-            $result = $this->connect()->prepare($sql);
+            $result = $this->checkConnect()->prepare($sql);
 			$result->execute($parameters);
             return $result;
         }
-		$result = $this->connect()->query($sql);
+		$result = $this->checkConnect()->query($sql);
         return $result;
 	}
 	
 	public function lastId()
 	{
-		$ID = $this->connect()->lastInsertId();
+		$ID = $this->checkConnect()->lastInsertId();
 		return $ID;
 	}
+
+	private function checkConnect()
+    {
+    //Vérifie si la connexion est nulle et fait appel à getConnection()
+        if ($this->db === null) {
+            return $this->connect();
+        }
+        //Si la connexion existe, elle est renvoyée, inutile de refaire une connexion
+        return $this->db;
+    }
 }
 ?>
