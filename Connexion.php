@@ -45,6 +45,12 @@ class Connexion {
         }
 		$result = $this->connect()->query($sql);
         return $result;
-    }
+	}
+	
+	public function lastId()
+	{
+		$ID = $this->connect()->lastInsertId();
+		return $ID;
+	}
 }
 ?>
