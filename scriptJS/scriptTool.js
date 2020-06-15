@@ -17,7 +17,7 @@ class LinkedSelectTools{
                 var data = JSON.parse(request.responseText);
                 console.log(data);
                 let options = data.reduce(function (acc, option){
-                    return acc + '<option value="' + option.toolSap + '">' + option.label + '</option>';
+                    return acc + '<option id= "' + option.numberOfPart + '" value="' + option.toolSap + '">' + option.label + '</option>';
                 },'');
 
                 this.$target.innerHTML = options;
@@ -36,6 +36,7 @@ class LinkedSelectTools{
     }
 }
 var toolSap;
+var divToolChoice = document.getElementById("toolChoice")
 class LaunchScan{
     
     constructor($select)  {
@@ -45,26 +46,54 @@ class LaunchScan{
     }
 
     onChange(e){
-        let divRecap = document.getElementById('toolChoiced');
-        var liste;
+        var liste = document.getElementById("tool")
+        toolSap = liste.options[liste.selectedIndex].value
+        numberOfPart = liste.options[liste.selectedIndex].id
+        divMoldingTool.innerHTML = "Outillage : OT0" + toolSap
+        switch (document.getElementById("title").innerText){
+            case 'Editer un moulage existant':
+                editTool(idMoldingToEdit, toolSap)
+                divToolChoice.style.display='none'
+                displayEditingMolding()
+                break
+            case 'Nouveau moulage':
+                divToolChoice.style.display = 'none'
+                divScan.style.display = 'block'
+                divManu.style.display = 'inline-block'
+                $inputKit.focus()
+                break
+            default:
+        }
+
         
         
-        liste = document.getElementById("tool");
-        toolSap = liste.options[liste.selectedIndex].value;
-        //divRecap.innerHTML = `Outillage : ${toolSap}`;
-        $inputKit.focus();
         
     }
 }
 
-let $selectProgram = document.querySelectorAll('.programs');
-let $selectTool = document.querySelectorAll('.tools');
+let $selectProgram = document.querySelectorAll('.programs')
+let $selectTool = document.querySelectorAll('.tools')
 
 
 $selectProgram.forEach(function ($select){
-    new LinkedSelectTools($select);
-});
+    new LinkedSelectTools($select)
+})
 
 $selectTool.forEach(function ($select){
-    new LaunchScan($select);
-});
+    new LaunchScan($select)
+})
+
+function editTool(moldingId,newTool){
+    var xmlhttp = new XMLHttpRequest()
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+        }
+    }   
+    xmlhttp.open("GET",'../scriptPhp/editToolScript.php?id=' + moldingId + '&tool=' + newTool ,true);
+        xmlhttp.onload = () => {
+            if (xmlhttp.status >= 200 && xmlhttp.status < 400){
+            }
+        }
+    xmlhttp.send()
+
+}

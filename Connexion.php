@@ -9,7 +9,7 @@ class Connexion {
 
 	private function connect()
 	{
-		require_once('config/config.php');
+		require('config/config.php');
 		foreach ($DataDb as $try)
 		{
 			$this->host = $try['DB_HOST'];

@@ -1,25 +1,40 @@
-var tbl = document.getElementById('tableauRecap');
-var divTbl = document.getElementById('printable');
-var username = document.getElementById('user').innerHTML;
+var divDay = document.getElementById('day')
+var dateToday = new Date()
+var divWorker = document.getElementById('worker')
+var divMoldingTool = document.getElementById('moldingTool')
+var divNumberOfPart = document.getElementById('numberOfPart')
+var numberOfPart
+var divNumberOfMissingPart = document.getElementById('numberOfMissingPart')
+var tbl = document.getElementById('tableauRecap')
+var divTbl = document.getElementById('printable')
+//var username = document.getElementById('user').innerHTML;
 var btnAddKitManualMode = document.getElementById('btnAddKitManualMode');
-var idKitTable = new Array();
-
 btnAddKitManualMode.addEventListener('click', addKitManualMode);
+var idKitTable = new Array();
+var divScan = document.getElementById("divScan")
 
+initNewMolding()
+
+function initNewMolding(){
+    divDay.innerHTML = "Date de moulage : " + dateToday.getDate() + "/" + (dateToday.getMonth()+1) + "/" + dateToday.getFullYear()
+    createKitTable()
+}
 function addKitManualMode() {
+    var manuKitArticleSap = document.getElementById('articleSap')
     var manuKitDesArticle = document.getElementById('desArticle')
     var manuKitWorkOrder = document.getElementById('workOrder')
     var manuKitDate18 = document.getElementById('pickerDate18')
     var manuKitDateDra = document.getElementById('pickerDateDra')
     var manuKitDatePol = document.getElementById('pickerDatePol')
-    if (!manuKitDesArticle.value == 0 && 
+    if (!manuKitDesArticle.value == 0 &&
+        !manuKitArticleSap.value == 0 && 
         !manuKitWorkOrder.value == 0 && 
         !manuKitDate18.value == 0 && 
         !manuKitDateDra.value == 0 && 
         !manuKitDatePol.value == 0){
-            var manuKit = new Kit('',manuKitWorkOrder.value,new Date(manuKitDate18.value),new Date(manuKitDateDra.value),new Date(manuKitDatePol.value))
-            manuKit.registerInBase(toolSap,1)
-            displayKitOnTable(manuKit)
+            var manuKit = new Kit(manuKitArticleSap.value, manuKitDesArticle.value,manuKitWorkOrder.value,new Date(manuKitDate18.value),new Date(manuKitDateDra.value),new Date(manuKitDatePol.value))
+            afterNewKitActions(manuKit)
+            manuKitArticleSap.value = ""
             manuKitDesArticle.value = ""
             manuKitWorkOrder.value = ""
             manuKitDate18.value = ""
@@ -28,102 +43,11 @@ function addKitManualMode() {
     }else{
         alert('Veuiller remplir correctement tous les champs !!')
     }
-}
 
+}
 function displayKitOnTable(kit){
     divTbl.style.display= null;
-    var expired = false;
-    // creates a table row
-    var row = document.createElement("tr");
-    for (var j = 0; j <= 5; j++) {
-    // Create a <td> element and a text node, make the text
-    // node the contents of the <td>, and put the <td> at
-    // the end of the table row
-        var cell = document.createElement("td");
-        var result = function(j){
-            let result1="";
-            switch (j) {
-                case 0:
-                    result1 = kit.refSap;
-                    break;
-                case 1:
-                    result1 = kit.workOrder;
-                    break;
-                case 2:
-					console.log(kit);
-                    var jour = kit['shelfLifeDate'].getDate();
-                    var mois = kit['shelfLifeDate'].getMonth()+1;
-                    var annee = kit['shelfLifeDate'].getFullYear();
-                    var heure = kit['shelfLifeDate'].getHours();
-                    var minute = kit['shelfLifeDate'].getMinutes();
-                    result1 = jour + '-' + mois + '-' + annee + ' à  ' + heure + ':' + minute;
-                    if(kit['shelfLifeDate'] < Date.now()){
-                    expired = true;
-                    }
-                    break;
-                case 3:
-                    var jour = kit['layUpLimDate'].getDate();
-                    var mois = kit['layUpLimDate'].getMonth()+1;
-                    var annee = kit['layUpLimDate'].getFullYear();
-                    var heure = kit['layUpLimDate'].getHours();
-                    var minute = kit['layUpLimDate'].getMinutes();
-                    result1 = jour + '-' + mois + '-' + annee + ' à ' + heure + ':' + minute;
-                    if(kit['layUpLimDate'] < Date.now()){
-                    expired = true;
-                    }
-                    break;
-                case 4:
-                    var jour = kit['curingLimDate'].getDate();
-                    var mois = kit['curingLimDate'].getMonth()+1;
-                    var annee = kit['curingLimDate'].getFullYear();
-                    var heure = kit['curingLimDate'].getHours();
-                    var minute = kit['curingLimDate'].getMinutes();
-                    result1 = jour + '-' + mois + '-' + annee + ' à  ' + heure + ':' + minute;
-                    if(kit['curingLimDate'] < Date.now()){
-                    expired = true
-                    }
-                    break
-                default:
-                    alert('case défaut')
-                    break                   
-            }
-            return result1
-        };
-        if (j==5){
-            var cellText = document.createElement("button");
-            cellText.className = "deleteLine"
-            cellText.innerHTML = "Supprimer"
-            cellText.addEventListener ("click", function() {
-                var xmlhttp = new XMLHttpRequest()
-                xmlhttp.open("GET",'../scriptPhp/unvalidateKitScript.php?id=' + kit.kitId,true)
-                xmlhttp.send()
-                oTr = cellText.parentNode.parentNode
-                oTr.remove()
-            })
-        }else{
-            var cellText = document.createTextNode(result(j))  
-        }
-        cell.appendChild(cellText)
-        row.appendChild(cell)
-        if (expired==true){
-            cell.style.background = "red"
-            cell.style.border = "solid 1px red"
-        }
-    }
-    var tblBody = document.getElementById('tbody')
-    // add the row to the end of the table body
-    tblBody.appendChild(row)
-    
-            // sets the border attribute of tbl to 2;
-    tbl.setAttribute("border", "1")
-
-    var tfDate18 = document.getElementById('tfDate18')
-    var tfDateDra = document.getElementById('tfDateDra')
-    var tfDatePol = document.getElementById('tfDatePol')
-
-    tfDate18.innerHTML = date18LimTot.getDate() + '-' + (date18LimTot.getMonth()+1) + '-' + date18LimTot.getFullYear() + ' à ' + date18LimTot.getHours() + ':' + date18LimTot.getMinutes();
-    tfDateDra.innerHTML = dateDraLimTot.getDate() + '-' + (dateDraLimTot.getMonth()+1) + '-' + dateDraLimTot.getFullYear() + ' à ' + dateDraLimTot.getHours() + ':' + dateDraLimTot.getMinutes();
-    tfDatePol.innerHTML = datePolLimTot.getDate() + '-' + (datePolLimTot.getMonth()+1) + '-' + datePolLimTot.getFullYear() + ' à ' + datePolLimTot.getHours() + ':' + datePolLimTot.getMinutes();
+    addRow(kit)
 }
 var btnScan = document.getElementById('btnScan')
 if(btnScan)   {
@@ -150,19 +74,26 @@ function exitFocusTxtArea(){
 function scanAction (event){
     if (event.keyCode === 13) {
         exitFocusTxtArea()
-        var kit = traitementDouchette($inputKit.value)
-        displayKitOnTable(kit)
+        if ($inputKit.value.length > 20){
+            newKitByScan($inputKit.value)
+        }else{
+            alert('Tentez de scanner le QR code et pas le code barre. \n\nPlacer un papier devant le code barre')
+        }
         $inputKit.value = ''
         window.setTimeout(focusTxtArea(), 3000)
     }
 }
+function afterNewKitActions(kit){
+    idKitTable.push(kit.kitId)
+    kit.registerInBase(toolSap,1)
+    updateGlobalDates(kit)
+    displayKitOnTable(kit)
 
-var dateFictive = new Date(2099,1,1)
-var date18LimTot = dateFictive
-var dateDraLimTot = dateFictive
-var datePolLimTot = dateFictive
-
-function traitementDouchette(){
+    console.log(idKitTable)
+    divNumberOfPart.innerHTML = "Nombre de kit scanné : " + idKitTable.length
+    divNumberOfMissingPart.innerHTML = "Nombre de kit manquant : " + numberOfPart - idKitTable.length
+}
+function newKitByScan(){
     //Tableau des index de colonnes de la Fiche de Vie scanner, "RefSap : "
     var TbIndex=["Kit : ", "RÃ©fÃ©rence SAP : ", "DÃ©signation SAP : ", "Tack Life ( Heures ) : ", 
     "Time Out ( Heures ) : ", "Date de pÃ©remption Ã -18Â°C : ", "KIT Ã draper avant : ", 
@@ -199,21 +130,13 @@ function traitementDouchette(){
     datePol.setHours(tableauRes[15].substr(11,2))
     datePol.setMinutes(tableauRes[15].substr(14,2))
 
-    if(date18 < date18LimTot){date18LimTot = date18}
-    if(dateDra < dateDraLimTot){dateDraLimTot = dateDra}
-    if(datePol < datePolLimTot){datePolLimTot = datePol}
-
-
-    var kit = new Kit(tableauRes[3],tableauRes[1],date18,dateDra,datePol)
-    kit.registerInBase(toolSap,1)
-    idKitTable.push(kit.kitId)
-    return kit
+    var scanKit = new Kit(tableauRes[3],tableauRes[5],tableauRes[1],date18,dateDra,datePol)
+    afterNewKitActions(scanKit)
 }
-
 function imprimer_page(elem, OT){
     var molding = new Molding(toolSap, date18LimTot, dateDraLimTot, datePolLimTot)
     molding.saveMolding()
-    var nodeToCopy = document.getElementById('tableauRecap').innerHTML
+    var nodeToCopy = document.getElementById('tableKit').innerHTML
     var mywindow = window.open("../public/printSheet.php","Fiche synthèse traçabilité")
     mywindow.onload = function() {
         mywindow.document.getElementById('tableauRecap2').innerHTML = nodeToCopy
@@ -222,22 +145,17 @@ function imprimer_page(elem, OT){
         var dateToday = new Date()
         var dateString = 'Date d\'enregistrement : ' + dateToday.getDate() + '/' + (dateToday.getMonth()+1) + '/' + dateToday.getFullYear() ;
         var tool = 'Outillage : OT0' + toolSap
-        var compagnon = 'Moulé par : ' + username
         var moldingId = 'ID du moulage : ' + molding.idMolding
 
-        var divTool = mywindow.document.getElementById('tool');
-        var divCompagnon = mywindow.document.getElementById('compagnon');
-        var divMoldingDate = mywindow.document.getElementById('moldingDate');
-        var divMoldingId = mywindow.document.getElementById('moldingId');
+        var divTool = mywindow.document.getElementById('tool')
+        var divMoldingDate = mywindow.document.getElementById('moldingDate')
+        var divMoldingId = mywindow.document.getElementById('moldingId')
 
-        divTool.innerHTML = tool;
-        divCompagnon.innerHTML = compagnon;
-        divMoldingDate.innerHTML = dateString;
-        divMoldingId.innerHTML = moldingId;
-        mywindow.print();
+        divTool.innerHTML = tool
+        divMoldingDate.innerHTML = dateString
+        divMoldingId.innerHTML = moldingId 
+        mywindow.print()
     }
-    
-    
 }
 function CheckDataIndex(Chaine,TbIndex,Sep){
     var DatasQR="";

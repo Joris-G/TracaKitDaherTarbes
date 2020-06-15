@@ -23,7 +23,9 @@ echo json_encode(array_map(function($item){
 return[
         'value' => $item['ID'], 
         'label' => $item['desOutillage'],
-        'toolSap' => $item['numOtSap']
+        'toolSap' => $item['numOtSap'],
+        'numberOfPart' => $item['nbPiece']
+        
     ];
 }, $articles));
 ?>

@@ -6,5 +6,8 @@
 ?>
 
 <?php require ('../header.php') ?>
-
+<div class="welcome" id="Profil">
+        <div>BIENVENUE </div>
+    <div id='user'><?php echo $_SESSION['username']; ?></div>
+</div>
 <?php require ('../footer.php') ?>

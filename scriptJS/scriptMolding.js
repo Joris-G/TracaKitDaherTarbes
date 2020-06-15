@@ -7,14 +7,12 @@ class Molding {
 		this.dateLimDra = dateLimDra
 		this.idMolding = null
 	}
+
 	saveMolding() {
 		var xmlhttp = new XMLHttpRequest();
 		xmlhttp.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
-				
+			if (this.readyState == 4 && this.status == 200) {		
 			}
-
-		
 		}
 		xmlhttp.open("GET",'../scriptPhp/newMoldingScript.php?tool=' + this.toolNum + '&date18=' + this.dateLim18.toISOString().slice(0, 19).replace('T', ' ') + '&datePol=' + this.dateLimPol.toISOString().slice(0, 19).replace('T', ' ') + '&dateDra=' + this.dateLimDra.toISOString().slice(0, 19).replace('T', ' '),true);
 		xmlhttp.onload = () => {
