@@ -15,5 +15,5 @@ if(empty($_SESSION['username'])){
   <link rel="stylesheet" href="style/styleMenu.css"> 
 </head>
 <body>
-
-<div class='menu'><?php include ('menu.php')?></div>
+<div class='perso-body'>
+<div class='header menu'><?php include ('menu.php')?></div>

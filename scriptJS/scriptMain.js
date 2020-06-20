@@ -1,23 +1,32 @@
 var divDay = document.getElementById('day')
 var dateToday = new Date()
 var divWorker = document.getElementById('worker')
-var divMoldingTool = document.getElementById('moldingTool')
+var divToolChoice = document.getElementById('toolChoice')
+var divInterractive = document.getElementById('interractiveTable')
 var divNumberOfPart = document.getElementById('numberOfPart')
 var numberOfPart
+var mywindow, timerLogout
 var divNumberOfMissingPart = document.getElementById('numberOfMissingPart')
 var tbl = document.getElementById('tableauRecap')
-var divTbl = document.getElementById('printable')
-//var username = document.getElementById('user').innerHTML;
-var btnAddKitManualMode = document.getElementById('btnAddKitManualMode');
-btnAddKitManualMode.addEventListener('click', addKitManualMode);
-var idKitTable = new Array();
+var divKitTable =document.getElementById('tableKit')
+var btnAddKitManualMode = document.getElementById('btnAddKitManualMode')
+btnAddKitManualMode.addEventListener('click', addKitManualMode)
+var idKitTable = new Array()
 var divScan = document.getElementById("divScan")
+var btnEdit = document.getElementById('edit')
+btnEdit.addEventListener('click', editMoldingMode)
+var title = document.getElementById('title')
 
 initNewMolding()
 
 function initNewMolding(){
+    startTimer()
     divDay.innerHTML = "Date de moulage : " + dateToday.getDate() + "/" + (dateToday.getMonth()+1) + "/" + dateToday.getFullYear()
-    createKitTable()
+    console.log("Nouveau Moulage lancé")
+    if(mywindow){
+        console.log(mywindow)
+        mywindow = window.close
+    }
 }
 function addKitManualMode() {
     var manuKitArticleSap = document.getElementById('articleSap')
@@ -43,11 +52,16 @@ function addKitManualMode() {
     }else{
         alert('Veuiller remplir correctement tous les champs !!')
     }
-
+    console.log("Le kit a été créé manuellement")
 }
 function displayKitOnTable(kit){
-    divTbl.style.display= null;
+    if (!divKitTable.hasChildNodes()) {
+        console.log("Le tableau va être créé car il n'existe pas")
+        createKitTable()
+    }
     addRow(kit)
+    divInterractive.style.display ='flex'
+    console.log("Le kit est affiché dans le tableau !")
 }
 var btnScan = document.getElementById('btnScan')
 if(btnScan)   {
@@ -82,16 +96,23 @@ function scanAction (event){
         $inputKit.value = ''
         window.setTimeout(focusTxtArea(), 3000)
     }
+    console.log("Scan effectué")
 }
 function afterNewKitActions(kit){
-    idKitTable.push(kit.kitId)
+    changeName(kit)
+    console.log(kit)
     kit.registerInBase(toolSap,1)
-    updateGlobalDates(kit)
+    idKitTable.push(kit.kitId)
     displayKitOnTable(kit)
-
-    console.log(idKitTable)
+    updateGlobalDates(kit)
     divNumberOfPart.innerHTML = "Nombre de kit scanné : " + idKitTable.length
     divNumberOfMissingPart.innerHTML = "Nombre de kit manquant : " + numberOfPart - idKitTable.length
+    console.log(`Les actions suivantes ont été réalisées : 
+    Changement de la désignation du kit, 
+    enregistrement du kit en bdd, 
+    ajout d'un kit dans le tableau virtuel,
+    affichage du kit dans le tableau,
+    mise a jour des dates de péremptions globales`)
 }
 function newKitByScan(){
     //Tableau des index de colonnes de la Fiche de Vie scanner, "RefSap : "
@@ -132,30 +153,41 @@ function newKitByScan(){
 
     var scanKit = new Kit(tableauRes[3],tableauRes[5],tableauRes[1],date18,dateDra,datePol)
     afterNewKitActions(scanKit)
+    console.log("Le kit a été ajouté par le scanner")
 }
 function imprimer_page(elem, OT){
-    var molding = new Molding(toolSap, date18LimTot, dateDraLimTot, datePolLimTot)
-    molding.saveMolding()
+    var molding = new Molding(toolSap, date18LimTot, dateDraLimTot, datePolLimTot,idMoldingToEdit)
+    saveMolding(molding)
+
+    console.log("L'id de moulage après sauvegarde est : " + molding.idMolding)
+    console.log(idKitTable)
+    molding.associateMoldingIdToKits(idKitTable,molding)
+
     var nodeToCopy = document.getElementById('tableKit').innerHTML
-    var mywindow = window.open("../public/printSheet.php","Fiche synthèse traçabilité")
+    mywindow = window.open("../public/printSheet.php","Fiche synthèse traçabilité")
     mywindow.onload = function() {
-        mywindow.document.getElementById('tableauRecap2').innerHTML = nodeToCopy
-        //mywindow.document.getElementsByClassName("deleteLine").style.display = "none"        
+    mywindow.document.getElementById('tableauRecap2').innerHTML = nodeToCopy      
 
-        var dateToday = new Date()
-        var dateString = 'Date d\'enregistrement : ' + dateToday.getDate() + '/' + (dateToday.getMonth()+1) + '/' + dateToday.getFullYear() ;
-        var tool = 'Outillage : OT0' + toolSap
-        var moldingId = 'ID du moulage : ' + molding.idMolding
+    var dateToday = new Date()
+    var dateString = 'Date d\'enregistrement : ' + dateToday.getDate() + '/' + (dateToday.getMonth()+1) + '/' + dateToday.getFullYear() ;
+    var tool = 'Outillage : OT0' + toolSap
+    var moldingId = 'ID du moulage : ' + molding.idMolding
 
-        var divTool = mywindow.document.getElementById('tool')
-        var divMoldingDate = mywindow.document.getElementById('moldingDate')
-        var divMoldingId = mywindow.document.getElementById('moldingId')
+    var divTool = mywindow.document.getElementById('tool')
+    var divMoldingDate = mywindow.document.getElementById('moldingDate')
+    var divMoldingId = mywindow.document.getElementById('moldingId')
 
-        divTool.innerHTML = tool
-        divMoldingDate.innerHTML = dateString
-        divMoldingId.innerHTML = moldingId 
+    divTool.innerHTML = tool
+    divMoldingDate.innerHTML = dateString
+    divMoldingId.innerHTML = moldingId
+    setTimeout(function() {
         mywindow.print()
-    }
+      }, 100);
+    //mywindow = window.close()
+}
+    
+    //window.location.href="../public/index.php"
+    console.log("Les actions suivantes ont été effectuée : Impression effectué, enregistrement du moulage, association du numéro de moulage à tous les kits")
 }
 function CheckDataIndex(Chaine,TbIndex,Sep){
     var DatasQR="";
@@ -170,4 +202,82 @@ function CheckDataIndex(Chaine,TbIndex,Sep){
         var DatasQR=DatasQR+TbIndex[i]+ Val+ Sep;
       }
     return DatasQR;
+}
+var divTool = document.getElementById('moldingTool')
+divTool.onmouseover = function(){
+    divTool.style.color="red"
+  }
+  divTool.onmouseout = function(){
+    divTool.style.color = 'white'
+  }
+  divTool.onclick = function(){
+    editToolMenu()
+  }
+  function editToolMenu(){
+    divToolChoice.style.display='block'
+    divKitTable.style.display='none'
+  }
+  var idMoldingToEdit
+  function editMoldingMode(){
+      //Message au chargement de la page
+    idMoldingToEdit = prompt("Veuiller entrer le numéro de moulage à modifier", "")
+//Si l'id de moulage est vide ou null retourne sur la page d'index
+    if (idMoldingToEdit == null || idMoldingToEdit == "") {
+    //window.location.href="newMolding.php"
+    }else{
+    displayEditingMolding()
+    }
+    console.log("Lancement du mode modification de moulage")
+  }
+function displayEditingMolding(){
+    divToolChoice.style.display ='none'
+    divScan.style.display = 'block'
+    divManu.style.display = 'inline-block'
+    title.innerHTML = "Modifier le moulage " + idMoldingToEdit
+    var textIdMolding = document.createElement('div')
+    textIdMolding.className="sideBar-item"
+    textIdMolding.id="moldingId"
+    textIdMolding.innerHTML = "Id de moulage : " + idMoldingToEdit
+  
+    var xmlhttp = new XMLHttpRequest()
+    xmlhttp.open("GET",'../scriptPhp/getMoldingSettingsByMoldingId.php?moldingId=' + parseInt(idMoldingToEdit),true);
+    xmlhttp.onload = () => {
+        if (xmlhttp.status >= 200 && xmlhttp.status < 400){
+            var dataMolding = JSON.parse(xmlhttp.responseText)
+            toolSap = dataMolding[0]['Outillage']
+            divTool.innerHTML = "Outillage : OT0" + toolSap
+            if(divKitTable.childNodes.length == 0){
+                showKits(idMoldingToEdit)
+            }
+        }
+    }
+    xmlhttp.send()
+    console.log("Récupération et Affichage des kits à modifier")  
+}
+function showKits(idMoulage){
+    var xmlhttp = new XMLHttpRequest()
+    xmlhttp.open("GET",'../scriptPhp/listKitsByMoldingId.php?moldingId=' + parseInt(idMoulage),true);
+    xmlhttp.onload = () => {
+        if (xmlhttp.status >= 200 && xmlhttp.status < 400){
+            var data = JSON.parse(xmlhttp.responseText)
+            console.log("Tentative d'ajout du kit : " + data[0]['value'])
+            for (var index = 0; index < data.length; index++) {
+                var id = data[index]['value']
+                var refSap = data[index]['ARTICLE SAP']
+                var des =data[index]['DESIGNATION']
+                var of = data[index]['OF']
+                var date18 =new Date(data[index]['DATE DE PEREMPTION A -18°C'])
+                var dateDra = new Date(data[index]['DATE LIMITE DE DRAPAGE'])
+                var datePol =new Date(data[index]['DATE LIMITE DE POLYMERISATION'])
+                var newKit = new Kit(refSap,des,of,date18,dateDra,datePol,id)
+                idKitTable.push(newKit.kitId)
+                console.log("ajoute dans le tableau virtuel de kit")
+                displayKitOnTable(newKit)
+                updateGlobalDates(newKit)
+                console.log("affiche des kits à modifier")                
+            }
+        }
+    }                     
+    xmlhttp.send()
+    console.log("Affichage des kits à modifier")
 }

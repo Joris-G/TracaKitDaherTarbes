@@ -10,29 +10,26 @@ class LinkedSelectTools{
 
     onChange(e){
         let request = new XMLHttpRequest();
-        request.open('GET', this.$select.dataset.source.replace('$prog', e.target.value),true);
-        //console.log(request.open('GET', this.$select.dataset.source.replace('$prog', e.target.value),true));
+        request.open('GET', this.$select.dataset.source.replace('$prog', e.target.value),true)
         request.onload = () => {
             if (request.status >= 200 && request.status < 400){
-                var data = JSON.parse(request.responseText);
-                console.log(data);
+                var data = JSON.parse(request.responseText)
                 let options = data.reduce(function (acc, option){
                     return acc + '<option id= "' + option.numberOfPart + '" value="' + option.toolSap + '">' + option.label + '</option>';
-                },'');
-
-                this.$target.innerHTML = options;
-                this.$target.insertBefore(this.$placeHolder,this.$target.firstChild);
-                this.$target.selectedIndex =0;
-                this.$target.style.display = null;
-                let toolStyleVisible = document.getElementById('tool');
-                toolStyleVisible.style.display = 'inline-block';
-            }else{}
-        };
-        
+                },'')
+                this.$target.innerHTML = options
+                this.$target.insertBefore(this.$placeHolder,this.$target.firstChild)
+                this.$target.selectedIndex =0
+                this.$target.style.display = null
+                let toolStyleVisible = document.getElementById('tool')
+                toolStyleVisible.style.display = 'inline-block'
+            }
+        }
         request.onerror = function(){
-            alert('Impossible de charger la liste on error');
-        };
-        request.send();
+            alert('Impossible de charger la liste on error')
+        }
+        request.send()
+        console.log("Liste des outillage mise a jour")
     }
 }
 var toolSap;
@@ -49,25 +46,29 @@ class LaunchScan{
         var liste = document.getElementById("tool")
         toolSap = liste.options[liste.selectedIndex].value
         numberOfPart = liste.options[liste.selectedIndex].id
-        divMoldingTool.innerHTML = "Outillage : OT0" + toolSap
-        switch (document.getElementById("title").innerText){
-            case 'Editer un moulage existant':
+        moldingTool.innerHTML = "Outillage : OT0" + toolSap
+        switch (title.innerText.substr(0,3)){
+            case "Mod":
                 editTool(idMoldingToEdit, toolSap)
                 divToolChoice.style.display='none'
-                displayEditingMolding()
+                divKitTable.style.display=''
+                divScan.style.display = 'block'
+                divManu.style.display = 'inline-block'
+                console.log("Outillage modifié !")
                 break
-            case 'Nouveau moulage':
+            case "Nou":
                 divToolChoice.style.display = 'none'
                 divScan.style.display = 'block'
                 divManu.style.display = 'inline-block'
                 $inputKit.focus()
+                //Test si une table existe                
+                if (idKitTable.length>0){
+                    divKitTable.style.display = 'flex'
+                }
+                console.log("Outillage choisi !")
                 break
             default:
         }
-
-        
-        
-        
     }
 }
 
@@ -95,5 +96,5 @@ function editTool(moldingId,newTool){
             }
         }
     xmlhttp.send()
-
+        console.log("Edition de l'outillage")
 }

@@ -1,5 +1,4 @@
 var divIdMolding = document.getElementById('idMolding')
-var divTool = document.getElementById('toolPanel')
 var btnChangeTool = document.getElementById('btnChangeTool')
 var headerValues = []
 //Message au chargement de la page
@@ -21,15 +20,7 @@ function displayEditingMolding(){
     if (xmlhttp.status >= 200 && xmlhttp.status < 400){
       var dataMolding = JSON.parse(xmlhttp.responseText)
       divTool.innerHTML = "Outillage : " + dataMolding[0]['Outillage']
-      divTool.onmouseover = function(){
-        divTool.style.color="red"
-      }
-      divTool.onmouseout = function(){
-        divTool.style.color = 'white'
-      }
-      divTool.onclick = function(){
-        editToolMenu()
-      }
+      
 
       // ,dataMolding[0]['DateDePeremptionA-18C'],dataMolding[0]['DateLimiteDeDrapage'], dataMolding[0]['DateLimiteDePolymerisation'])
     }
@@ -48,7 +39,7 @@ function editToolMenu(){
   divToolChoice.style.display="block"
 }
 function editKitMenu(){
-  var divKitTable = document.getElementById("kitTable")
+
   divKitTable.style.display="block"
   showKits(idMoldingToEdit)
 }
@@ -155,9 +146,4 @@ function populateRows(jsonData, tableDOM){
     tbody.appendChild(tr1)
   }
 tableDOM.appendChild(tbody)
-}
-function deleteKit(kit){
-  var xmlhttp = new XMLHttpRequest()
-  xmlhttp.open("GET",'../scriptPhp/unvalidateKitScript.php?id=' + kit,true)
-  xmlhttp.send()
 }

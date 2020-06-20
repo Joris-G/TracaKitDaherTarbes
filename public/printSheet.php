@@ -25,5 +25,7 @@ session_start();
 
         <div id="printable2"></div>
         <table id="tableauRecap2"></table>
+        <script src="../scriptJS/prinsheet.js"></script>
     </body>
+
 </html>

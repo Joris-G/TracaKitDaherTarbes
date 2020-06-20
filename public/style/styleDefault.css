@@ -13,33 +13,11 @@
 
   --my-bg-image : url("../src/img/fond.jpg");
 }
-.title{
-  font-size : 30px;
-  display: flex;
-  width: 100%;
-  justify-content: center;
-}
-.title2{
-  text-decoration: underline;
-}
-.content{
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  align-items: baseline;
-  justify-content: start;
-  overflow:auto;
-  padding: 15px;
-  color: rgb(255, 255, 255);
-}
-body {
-  height: 100%;
-  display:flex;
-  flex-direction: column;
-  justify-content: stretch;
+body{
+  min-height: 100vh;
   margin: 0px;
   padding: 0px;
-  font-family : var(--my-font-daher);
+  font-family: 'Raleway';
   font-size : 15px;
   color : white;
   background-image: var(--my-bg-image);
@@ -47,50 +25,99 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  overflow: visible;
-  height:auto;
+  overflow: hidden;
 }
+.perso-body {
+  display:flex;
+  flex-direction: column;
+  justify-content: stretch;
+}
+.header{
+  width: 100%;
+ }
+.content{
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  justify-content: space-between;
+  overflow:auto;
+}
+.sideBar-left{
+  order: -1;
+  height: 100%;
+  min-width: 280px;
+  background: rgba(0,13,36,0.5);
+}
+.sideBar-right{
+  order: 2;
+  height: 100%;
+  min-width: 280px;
+  background: rgba(0,13,36,0.5);
+}
+.sideBar-content{
+  font-size: 15px;
+  margin : 10px;
+}
+.sideBar-title{
+  margin: 5px;
+}
+.sideBar-item{
+  margin-left: 20px;
+}
+.molding{
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+.molding div{
+  margin: 10px;
+}
+.title{
+  font-size : 30px;
+  text-align: center;
+}
+.title2{
+  text-decoration: underline;
+}
+@media only screen and (max-width: 764px) {
+	.forms {
+    display: flex;
+    flex-direction: row; 
+  }
+}
+.forms{
+  display: flex;
+  flex-direction: row;
+}
+.kitTable{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align : center;
+  backdrop-filter: brightness(60%);
+}
+
+
+
+
+
+
 #titreInfoMoulage{
   text-decoration: underline;
   font-size: 20px;
-}
-.menu{
-  width: 100%;
-}
-.pageContent{
-  display: flex;
-  justify-content: start;
-  height: 100vh;
 }
 .welcome{
 display: flex;
 flex-direction: column;
 align-items: center;
 }
-.sideBar{
-  height: 100%;
-  min-width: 280px;
-  font-size: 15px;
-  padding: 5px;
-  background: rgba(0,13,36,0.5);
-}
+
 .cellInvisible{
   display: none;
 }
-.kitTable{
-  display: flex;
-  flex-direction: column;
-  text-align : center;
-  backdrop-filter: brightness(60%);
-}
+
 .kitTable > tfoot{
   margin-top: 30px;
-}
-#content{
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: left;
 }
 tfoot td{
   height: 150px;
