@@ -1,8 +1,7 @@
-#printable{
-    display: block;
-}
 #programChoice {
-    display: inline;
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
     margin: 10px;
   }
 #programs{

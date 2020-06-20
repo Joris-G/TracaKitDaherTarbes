@@ -1,111 +1,73 @@
-var tbl = document.getElementById('tableauRecap');
-var divTbl = document.getElementById('printable');
-var username = document.getElementById('user').innerHTML;
-var idKitTable = new Array();
+var divDay = document.getElementById('day')
+var dateToday = new Date()
+var divWorker = document.getElementById('worker')
+var divToolChoice = document.getElementById('toolChoice')
+var divInterractive = document.getElementById('interractiveTable')
+var divNumberOfPart = document.getElementById('numberOfPart')
+var numberOfPart
+var mywindow, timerLogout
+var divNumberOfMissingPart = document.getElementById('numberOfMissingPart')
+var tbl = document.getElementById('tableauRecap')
+var divKitTable =document.getElementById('tableKit')
+var btnAddKitManualMode = document.getElementById('btnAddKitManualMode')
+btnAddKitManualMode.addEventListener('click', addKitManualMode)
+var idKitTable = new Array()
+var divScan = document.getElementById("divScan")
+var btnEdit = document.getElementById('edit')
+btnEdit.addEventListener('click', editMoldingMode)
+var title = document.getElementById('title')
 
-function displayKitOnTable(kit){
-    divTbl.style.display= null;
-    var expired = false;
-    // creates a table row
-    var row = document.createElement("tr");
-    for (var j = 0; j <= 5; j++) {
-    // Create a <td> element and a text node, make the text
-    // node the contents of the <td>, and put the <td> at
-    // the end of the table row
-        var cell = document.createElement("td");
-        var result = function(j){
-            let result1="";
-            switch (j) {
-                case 0:
-                    result1 = kit.refSap;
-                    break;
-                case 1:
-                    result1 = kit.workOrder;
-                    break;
-                case 2:
-					console.log(kit);
-                    var jour = kit['shelfLifeDate'].getDate();
-                    var mois = kit['shelfLifeDate'].getMonth()+1;
-                    var annee = kit['shelfLifeDate'].getFullYear();
-                    var heure = kit['shelfLifeDate'].getHours();
-                    var minute = kit['shelfLifeDate'].getMinutes();
-                    result1 = jour + '-' + mois + '-' + annee + ' à  ' + heure + ':' + minute;
-                    if(kit['shelfLifeDate'] < Date.now()){
-                    expired = true;
-                    }
-                    break;
-                case 3:
-                    var jour = kit['layUpLimDate'].getDate();
-                    var mois = kit['layUpLimDate'].getMonth()+1;
-                    var annee = kit['layUpLimDate'].getFullYear();
-                    var heure = kit['layUpLimDate'].getHours();
-                    var minute = kit['layUpLimDate'].getMinutes();
-                    result1 = jour + '-' + mois + '-' + annee + ' à ' + heure + ':' + minute;
-                    if(kit['layUpLimDate'] < Date.now()){
-                    expired = true;
-                    }
-                    break;
-                case 4:
-                    var jour = kit['curingLimDate'].getDate();
-                    var mois = kit['curingLimDate'].getMonth()+1;
-                    var annee = kit['curingLimDate'].getFullYear();
-                    var heure = kit['curingLimDate'].getHours();
-                    var minute = kit['curingLimDate'].getMinutes();
-                    result1 = jour + '-' + mois + '-' + annee + ' à  ' + heure + ':' + minute;
-                    if(kit['curingLimDate'] < Date.now()){
-                    expired = true
-                    }
-                    break
-                    case 5:
-                        //alert(kit.kitId)
-                default:
-                    alert('case défaut')
-                    break                   
-            }
-            return result1
-        };
-        if (j==5){
-            //alert(kit.kitId)
-            var cellText = document.createElement("button");
-            cellText.className = "deleteLine"
-            cellText.innerHTML = "Supprimer"
-            cellText.addEventListener ("click", function() {
-                var xmlhttp = new XMLHttpRequest()
-                xmlhttp.open("GET",'../scriptPhp/unvalidateKitScript.php?id=' + kit.kitId,true)
-                xmlhttp.send()
-                oTr = cellText.parentNode.parentNode
-                oTr.remove()
-            })
-        }else{
-            var cellText = document.createTextNode(result(j))  
-        }
-        cell.appendChild(cellText)
-        row.appendChild(cell)
-        if (expired==true){
-            cell.style.background = "red"
-            cell.style.border = "solid 1px red"
-        }
+initNewMolding()
+
+function initNewMolding(){
+    startTimer()
+    divDay.innerHTML = "Date de moulage : " + dateToday.getDate() + "/" + (dateToday.getMonth()+1) + "/" + dateToday.getFullYear()
+    console.log("Nouveau Moulage lancé")
+    if(mywindow){
+        console.log(mywindow)
+        mywindow = window.close
     }
-    var tblBody = document.getElementById('tbody')
-    // add the row to the end of the table body
-    tblBody.appendChild(row)
-    
-            // sets the border attribute of tbl to 2;
-    tbl.setAttribute("border", "1")
-
-    var tfDate18 = document.getElementById('tfDate18')
-    var tfDateDra = document.getElementById('tfDateDra')
-    var tfDatePol = document.getElementById('tfDatePol')
-
-    tfDate18.innerHTML = date18LimTot.getDate() + '-' + (date18LimTot.getMonth()+1) + '-' + date18LimTot.getFullYear() + ' à ' + date18LimTot.getHours() + ':' + date18LimTot.getMinutes();
-    tfDateDra.innerHTML = dateDraLimTot.getDate() + '-' + (dateDraLimTot.getMonth()+1) + '-' + dateDraLimTot.getFullYear() + ' à ' + dateDraLimTot.getHours() + ':' + dateDraLimTot.getMinutes();
-    tfDatePol.innerHTML = datePolLimTot.getDate() + '-' + (datePolLimTot.getMonth()+1) + '-' + datePolLimTot.getFullYear() + ' à ' + datePolLimTot.getHours() + ':' + datePolLimTot.getMinutes();
 }
-var btnScan = document.getElementById('btnScan');
+function addKitManualMode() {
+    var manuKitArticleSap = document.getElementById('articleSap')
+    var manuKitDesArticle = document.getElementById('desArticle')
+    var manuKitWorkOrder = document.getElementById('workOrder')
+    var manuKitDate18 = document.getElementById('pickerDate18')
+    var manuKitDateDra = document.getElementById('pickerDateDra')
+    var manuKitDatePol = document.getElementById('pickerDatePol')
+    if (!manuKitDesArticle.value == 0 &&
+        !manuKitArticleSap.value == 0 && 
+        !manuKitWorkOrder.value == 0 && 
+        !manuKitDate18.value == 0 && 
+        !manuKitDateDra.value == 0 && 
+        !manuKitDatePol.value == 0){
+            var manuKit = new Kit(manuKitArticleSap.value, manuKitDesArticle.value,manuKitWorkOrder.value,new Date(manuKitDate18.value),new Date(manuKitDateDra.value),new Date(manuKitDatePol.value))
+            afterNewKitActions(manuKit)
+            manuKitArticleSap.value = ""
+            manuKitDesArticle.value = ""
+            manuKitWorkOrder.value = ""
+            manuKitDate18.value = ""
+            manuKitDateDra.value = ""
+            manuKitDatePol.value = ""
+    }else{
+        alert('Veuiller remplir correctement tous les champs !!')
+    }
+    console.log("Le kit a été créé manuellement")
+}
+function displayKitOnTable(kit){
+    if (!divKitTable.hasChildNodes()) {
+        console.log("Le tableau va être créé car il n'existe pas")
+        createKitTable()
+    }
+    addRow(kit)
+    divInterractive.style.display ='flex'
+    console.log("Le kit est affiché dans le tableau !")
+}
+var btnScan = document.getElementById('btnScan')
 if(btnScan)   {
     btnScan.addEventListener('click', focusTxtArea)
 }
-var $inputKit = document.getElementById('kitInput');
+var $inputKit = document.getElementById('kitInput')
 if($inputKit){
     $inputKit.addEventListener("focus", focusScanAction);
     $inputKit.addEventListener("focusout", exitFocusScanAction);
@@ -118,24 +80,41 @@ function focusScanAction(){
     btnScan.style.backgroundColor = "green";
 }
 function focusTxtArea(){
-    $inputKit.focus();
+    $inputKit.focus()
 }
-
+function exitFocusTxtArea(){
+    $inputKit.blur()
+}
 function scanAction (event){
     if (event.keyCode === 13) {
-    var kit = traitementDouchette($inputKit.value);
-    displayKitOnTable(kit);
-    $inputKit.value = '';
-    focusTxtArea()
+        exitFocusTxtArea()
+        if ($inputKit.value.length > 20){
+            newKitByScan($inputKit.value)
+        }else{
+            alert('Tentez de scanner le QR code et pas le code barre. \n\nPlacer un papier devant le code barre')
+        }
+        $inputKit.value = ''
+        window.setTimeout(focusTxtArea(), 3000)
     }
+    console.log("Scan effectué")
 }
-
-var dateFictive = new Date(2099,1,1);
-var date18LimTot = dateFictive;
-var dateDraLimTot = dateFictive;
-var datePolLimTot = dateFictive;
-
-function traitementDouchette(){
+function afterNewKitActions(kit){
+    changeName(kit)
+    console.log(kit)
+    kit.registerInBase(toolSap,1)
+    idKitTable.push(kit.kitId)
+    displayKitOnTable(kit)
+    updateGlobalDates(kit)
+    divNumberOfPart.innerHTML = "Nombre de kit scanné : " + idKitTable.length
+    divNumberOfMissingPart.innerHTML = "Nombre de kit manquant : " + numberOfPart - idKitTable.length
+    console.log(`Les actions suivantes ont été réalisées : 
+    Changement de la désignation du kit, 
+    enregistrement du kit en bdd, 
+    ajout d'un kit dans le tableau virtuel,
+    affichage du kit dans le tableau,
+    mise a jour des dates de péremptions globales`)
+}
+function newKitByScan(){
     //Tableau des index de colonnes de la Fiche de Vie scanner, "RefSap : "
     var TbIndex=["Kit : ", "RÃ©fÃ©rence SAP : ", "DÃ©signation SAP : ", "Tack Life ( Heures ) : ", 
     "Time Out ( Heures ) : ", "Date de pÃ©remption Ã -18Â°C : ", "KIT Ã draper avant : ", 
@@ -172,71 +151,44 @@ function traitementDouchette(){
     datePol.setHours(tableauRes[15].substr(11,2))
     datePol.setMinutes(tableauRes[15].substr(14,2))
 
-    if(date18 < date18LimTot){date18LimTot = date18}
-    if(dateDra < dateDraLimTot){dateDraLimTot = dateDra}
-    if(datePol < datePolLimTot){datePolLimTot = datePol}
-
-
-    var kit = new Kit(tableauRes[3],tableauRes[1],date18,dateDra,datePol)
-    kit.registerInBase(toolSap,1)
-    idKitTable.push(kit.kitId)
-    return kit
+    var scanKit = new Kit(tableauRes[3],tableauRes[5],tableauRes[1],date18,dateDra,datePol)
+    afterNewKitActions(scanKit)
+    console.log("Le kit a été ajouté par le scanner")
 }
-// TraitementDouchette["__class"] = "TraitementDouchette";
-
-// function imprimer(divName) {
-//     var printContents = document.getElementById(divName).innerHTML;    
-//  var originalContents = document.body.innerHTML;      
-//  document.body.innerHTML = printContents;     
-//  window.print();     
-//  document.body.innerHTML = originalContents;
-//  }
-
 function imprimer_page(elem, OT){
-    var molding = new Molding(toolSap, date18LimTot, dateDraLimTot, datePolLimTot)
-    molding.saveMolding()
-     nodeToCopy = document.getElementById('tableauRecap').innerHTML
-     var mywindow = window.open("../public/printSheet.php","Fiche synthèse traçabilité")
-     mywindow.onload = function() {
-         mywindow.document.getElementById('tableauRecap2').innerHTML = nodeToCopy
-         //mywindow.document.getElementById('tableauRecap2').innerHTML
-         mywindow.document.getElementsByClassName("deleteLine").style.display = "none"
-        //  function deleteCol(el,n){
-        //      var r=(typeof el==='string'?document.getElementById(el):el).rows,i=r.length;
-        //      while(i--){
-        //          r[i].deleteCell(n);
-        //     }
-        // }
-        // deleteCol("deleteLine")
+    var molding = new Molding(toolSap, date18LimTot, dateDraLimTot, datePolLimTot,idMoldingToEdit)
+    saveMolding(molding)
 
+    console.log("L'id de moulage après sauvegarde est : " + molding.idMolding)
+    console.log(idKitTable)
+    molding.associateMoldingIdToKits(idKitTable,molding)
 
-    //     //var title = 'feuille de traçabilité';
-         var dateToday = new Date()
-         var dateString = 'Date d\'enregistrement : ' + dateToday.getDate() + '/' + (dateToday.getMonth()+1) + '/' + dateToday.getFullYear() ;
-         var tool = 'Outillage : OT0' + toolSap
-         var compagnon = 'Moulé par : ' + username
-         var moldingId = 'ID du moulage : ' + molding.idMolding
+    var nodeToCopy = document.getElementById('tableKit').innerHTML
+    mywindow = window.open("../public/printSheet.php","Fiche synthèse traçabilité")
+    mywindow.onload = function() {
+    mywindow.document.getElementById('tableauRecap2').innerHTML = nodeToCopy      
 
-    //     //var divTitle = mywindow.document.getElementById('title');
-         var divTool = mywindow.document.getElementById('tool');
-         var divCompagnon = mywindow.document.getElementById('compagnon');
-         var divMoldingDate = mywindow.document.getElementById('moldingDate');
-         var divMoldingId = mywindow.document.getElementById('moldingId');
+    var dateToday = new Date()
+    var dateString = 'Date d\'enregistrement : ' + dateToday.getDate() + '/' + (dateToday.getMonth()+1) + '/' + dateToday.getFullYear() ;
+    var tool = 'Outillage : OT0' + toolSap
+    var moldingId = 'ID du moulage : ' + molding.idMolding
 
-    //     //divTitle.innerHTML = title;
-         divTool.innerHTML = tool;
-         divCompagnon.innerHTML = compagnon;
-         divMoldingDate.innerHTML = dateString;
-         divMoldingId.innerHTML = moldingId;
+    var divTool = mywindow.document.getElementById('tool')
+    var divMoldingDate = mywindow.document.getElementById('moldingDate')
+    var divMoldingId = mywindow.document.getElementById('moldingId')
 
-
-    }
+    divTool.innerHTML = tool
+    divMoldingDate.innerHTML = dateString
+    divMoldingId.innerHTML = moldingId
+    setTimeout(function() {
+        mywindow.print()
+      }, 100);
+    //mywindow = window.close()
 }
-
-   // mywindow.print();
-
-    //WebBrowser.ExecWB(6,2,3,0);
-
+    
+    //window.location.href="../public/index.php"
+    console.log("Les actions suivantes ont été effectuée : Impression effectué, enregistrement du moulage, association du numéro de moulage à tous les kits")
+}
 function CheckDataIndex(Chaine,TbIndex,Sep){
     var DatasQR="";
     for (var i = 0; i < TbIndex.length; i++) {
@@ -250,4 +202,82 @@ function CheckDataIndex(Chaine,TbIndex,Sep){
         var DatasQR=DatasQR+TbIndex[i]+ Val+ Sep;
       }
     return DatasQR;
+}
+var divTool = document.getElementById('moldingTool')
+divTool.onmouseover = function(){
+    divTool.style.color="red"
+  }
+  divTool.onmouseout = function(){
+    divTool.style.color = 'white'
+  }
+  divTool.onclick = function(){
+    editToolMenu()
+  }
+  function editToolMenu(){
+    divToolChoice.style.display='block'
+    divKitTable.style.display='none'
+  }
+  var idMoldingToEdit
+  function editMoldingMode(){
+      //Message au chargement de la page
+    idMoldingToEdit = prompt("Veuiller entrer le numéro de moulage à modifier", "")
+//Si l'id de moulage est vide ou null retourne sur la page d'index
+    if (idMoldingToEdit == null || idMoldingToEdit == "") {
+    //window.location.href="newMolding.php"
+    }else{
+    displayEditingMolding()
+    }
+    console.log("Lancement du mode modification de moulage")
+  }
+function displayEditingMolding(){
+    divToolChoice.style.display ='none'
+    divScan.style.display = 'block'
+    divManu.style.display = 'inline-block'
+    title.innerHTML = "Modifier le moulage " + idMoldingToEdit
+    var textIdMolding = document.createElement('div')
+    textIdMolding.className="sideBar-item"
+    textIdMolding.id="moldingId"
+    textIdMolding.innerHTML = "Id de moulage : " + idMoldingToEdit
+  
+    var xmlhttp = new XMLHttpRequest()
+    xmlhttp.open("GET",'../scriptPhp/getMoldingSettingsByMoldingId.php?moldingId=' + parseInt(idMoldingToEdit),true);
+    xmlhttp.onload = () => {
+        if (xmlhttp.status >= 200 && xmlhttp.status < 400){
+            var dataMolding = JSON.parse(xmlhttp.responseText)
+            toolSap = dataMolding[0]['Outillage']
+            divTool.innerHTML = "Outillage : OT0" + toolSap
+            if(divKitTable.childNodes.length == 0){
+                showKits(idMoldingToEdit)
+            }
+        }
+    }
+    xmlhttp.send()
+    console.log("Récupération et Affichage des kits à modifier")  
+}
+function showKits(idMoulage){
+    var xmlhttp = new XMLHttpRequest()
+    xmlhttp.open("GET",'../scriptPhp/listKitsByMoldingId.php?moldingId=' + parseInt(idMoulage),true);
+    xmlhttp.onload = () => {
+        if (xmlhttp.status >= 200 && xmlhttp.status < 400){
+            var data = JSON.parse(xmlhttp.responseText)
+            console.log("Tentative d'ajout du kit : " + data[0]['value'])
+            for (var index = 0; index < data.length; index++) {
+                var id = data[index]['value']
+                var refSap = data[index]['ARTICLE SAP']
+                var des =data[index]['DESIGNATION']
+                var of = data[index]['OF']
+                var date18 =new Date(data[index]['DATE DE PEREMPTION A -18°C'])
+                var dateDra = new Date(data[index]['DATE LIMITE DE DRAPAGE'])
+                var datePol =new Date(data[index]['DATE LIMITE DE POLYMERISATION'])
+                var newKit = new Kit(refSap,des,of,date18,dateDra,datePol,id)
+                idKitTable.push(newKit.kitId)
+                console.log("ajoute dans le tableau virtuel de kit")
+                displayKitOnTable(newKit)
+                updateGlobalDates(newKit)
+                console.log("affiche des kits à modifier")                
+            }
+        }
+    }                     
+    xmlhttp.send()
+    console.log("Affichage des kits à modifier")
 }

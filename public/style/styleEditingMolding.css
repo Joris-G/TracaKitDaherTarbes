@@ -1,0 +1,30 @@
+@import 'styleDefault.css';
+
+
+#moldingSettings {
+    background-color: aqua;
+}
+#toolChoice{
+    display : none;
+    background-color: gold;
+}
+#tableEditMolding{
+    display : block;
+    text-align : center;
+    border: 0px solid transparent;
+    table-layout: initial;
+    width: 100%;
+    background-color: deeppink;
+    /* border-spacing: 3px; */
+}
+tr{
+    border : 10px solid transparent;
+    
+}
+
+#tableEditMolding tbody tr:hover {
+    background-color: rgba(255, 255,215, 0.3);
+}
+#btn:hover{
+    cursor: pointer;
+}

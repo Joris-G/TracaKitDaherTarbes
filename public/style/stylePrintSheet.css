@@ -1,6 +1,8 @@
 @import 'styleDefault.css';
 
 body{
+    background: none;
+    color : black;
     margin: 0px;
     padding: 0px;
     font-family : var(--my-font-daher);

@@ -13,13 +13,7 @@ if(empty($_SESSION['username'])){
   <title>Titre de la page</title>
   <link rel="stylesheet" href="style/styleIndex.css">
   <link rel="stylesheet" href="style/styleMenu.css"> 
-  
 </head>
 <body>
-
-<?php include ('menu.php')?>
-
-<div class="welcome" id="Profil">
-        <div>BIENVENUE </div>
-    <div id='user'><?php echo $_SESSION['username']; ?></div>
-</div>
+<div class='perso-body'>
+<div class='header menu'><?php include ('menu.php')?></div>

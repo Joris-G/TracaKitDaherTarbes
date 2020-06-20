@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,15 +18,14 @@
 
         <div id="moldingInfo">
             <div id="tool"></div>
-            <div id="compagnon"></div>
+            <div id="compagnon">Moulé par : <?php echo $_SESSION['username']; ?></div>
             <div id="moldingDate"></div>
             <div id="moldingId"></div>
-            
         </div>    
-        
 
         <div id="printable2"></div>
-            <table id="tableauRecap2"></table>
-        </div>
+        <table id="tableauRecap2"></table>
+        <script src="../scriptJS/prinsheet.js"></script>
     </body>
+
 </html>

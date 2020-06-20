@@ -1,30 +1,64 @@
 class Kit {
-    constructor(refSap, workOrder, shelfLifeDate, layUpLimDate, curingLimDate) {
+    constructor(refSap, desArticle, workOrder, shelfLifeDate, layUpLimDate, curingLimDate, kitId = 0) {
         this.refSap = refSap
+        this.desArticle = desArticle
         this.workOrder = workOrder
         this.shelfLifeDate = shelfLifeDate
         this.layUpLimDate = layUpLimDate
         this.curingLimDate = curingLimDate
-        this.kitId = null
-    }
+        this.kitId = kitId
+      }
     set refSap(ref){this._refSap = ref}
     get refSap(){return this._refSap}
 
+    set idKit(id){
+      this.kitId = id
+    }
+    get idKit(){
+      return this.kitId
+    }
     registerInBase(numOt, numMolding) {
         var xmlhttp = new XMLHttpRequest()
-        xmlhttp.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-            //document.getElementById("txtHint").innerHTML = this.responseText;
-          }
-        };
-        
-        xmlhttp.open("GET",'../scriptPhp/BDDKitScript.php?of=' + this.workOrder + '&refSap=' + this.refSap + '&ot=' + numOt + '&dateDra=' + this.layUpLimDate.toISOString().slice(0, 19).replace('T', ' ') + '&datePol=' + this.curingLimDate.toISOString().slice(0, 19).replace('T', ' ') + '&date18=' + this.shelfLifeDate.toISOString().slice(0, 19).replace('T', ' '),true);
+        xmlhttp.open("GET",'../scriptPhp/BDDKitScript.php?of=' + this.workOrder + '&refSap=' + this.refSap + '&designation=' + this.desArticle + '&ot=' + numOt + '&dateDra=' + this.layUpLimDate.toISOString().slice(0, 19).replace('T', ' ') + '&datePol=' + this.curingLimDate.toISOString().slice(0, 19).replace('T', ' ') + '&date18=' + this.shelfLifeDate.toISOString().slice(0, 19).replace('T', ' '),false);
         xmlhttp.onload = () => {
           if (xmlhttp.status >= 200 && xmlhttp.status < 400){
             this.kitId= xmlhttp.responseText
           }
         }
         xmlhttp.send()
-
     }
+}
+function displayKitDate(date){
+  var jour = formatZero(date.getDate())
+  var mois = formatZero(date.getMonth()+1)
+  var annee = date.getFullYear()
+  var heure = formatZero(date.getHours())
+  var minute = formatZero(date.getMinutes())
+  var formatDate = jour + '-' + mois + '-' + annee + ' à  ' + heure + ':' + minute
+  return formatDate
+}
+function expired(date){
+  if(date < Date.now()){
+    return true
+  }else{
+    return false
+  }
+}
+function formatZero(datePart){
+  if(datePart<10){
+    dateZero = "0"+ datePart
+  }else{
+    dateZero=datePart
+  }
+  return dateZero
+}
+function changeName(kit){
+  var xmlhttp = new XMLHttpRequest()
+  xmlhttp.open("GET",'../scriptPhp/getDesignationWithArticleSap.php?articleSap=' + kit.refSap,false)  
+  xmlhttp.onload = () => {
+    if (xmlhttp.status >= 200 && xmlhttp.status < 400){
+      kit.desArticle= xmlhttp.responseText
+    }
+  }
+  xmlhttp.send()
 }

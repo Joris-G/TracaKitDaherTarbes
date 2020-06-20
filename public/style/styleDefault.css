@@ -4,10 +4,123 @@
 }
 
 :root {
-  --my-color-bleuDaher: rgb(255,255,255);
+  --my-color-bleuDaher: rgb(0,50,95);
+  --my-color-bleuDaher2 : rgb(0,13,36);
   --my-color-rougeDaher: rgb(230,0,50);
+  --my-color-whiteFont : rgb(255,255,255);
 
   --my-font-daher : 'Raleway';
 
   --my-bg-image : url("../src/img/fond.jpg");
+}
+body{
+  min-height: 100vh;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'Raleway';
+  font-size : 15px;
+  color : white;
+  background-image: var(--my-bg-image);
+  background-attachment:fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+.perso-body {
+  display:flex;
+  flex-direction: column;
+  justify-content: stretch;
+}
+.header{
+  width: 100%;
+ }
+.content{
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  justify-content: space-between;
+  overflow:auto;
+}
+.sideBar-left{
+  order: -1;
+  height: 100%;
+  min-width: 280px;
+  background: rgba(0,13,36,0.5);
+}
+.sideBar-right{
+  order: 2;
+  height: 100%;
+  min-width: 280px;
+  background: rgba(0,13,36,0.5);
+}
+.sideBar-content{
+  font-size: 15px;
+  margin : 10px;
+}
+.sideBar-title{
+  margin: 5px;
+}
+.sideBar-item{
+  margin-left: 20px;
+}
+.molding{
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+.molding div{
+  margin: 10px;
+}
+.title{
+  font-size : 30px;
+  text-align: center;
+}
+.title2{
+  text-decoration: underline;
+}
+@media only screen and (max-width: 764px) {
+	.forms {
+    display: flex;
+    flex-direction: row; 
+  }
+}
+.forms{
+  display: flex;
+  flex-direction: row;
+}
+.kitTable{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align : center;
+  backdrop-filter: brightness(60%);
+}
+
+
+
+
+
+
+#titreInfoMoulage{
+  text-decoration: underline;
+  font-size: 20px;
+}
+.welcome{
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+.cellInvisible{
+  display: none;
+}
+
+.kitTable > tfoot{
+  margin-top: 30px;
+}
+tfoot td{
+  height: 150px;
+  font-weight: bold;
+  color: cyan;
 }
