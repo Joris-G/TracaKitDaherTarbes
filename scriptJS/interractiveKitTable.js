@@ -35,6 +35,7 @@ function addRow(kit){
         expired(kit.layUpLimDate)
 
     var trKit = document.createElement('tr')//On créé la ligne du kit
+    trKit.classList.add('rowKit')
     thisKit.forEach(element => {
         var tabCell = document.createElement("td")//On créé une cellule pour chaque valeur de kit       
         if(isValidDate(element)){
@@ -55,7 +56,7 @@ function addRow(kit){
     image.src = 'src/img/poub_daher_blanc-03'
     tabCell.id = 'btn'
     tabCell.appendChild(image)
-    tabCell.classList.add('cellInvisible')
+    tabCell.classList.add('cellInvisible','redhover')
     tabCell.onclick = function(){
         var xmlhttp = new XMLHttpRequest()
         xmlhttp.open("GET",'../scriptPhp/unvalidateKitScript.php?id=' + kit.kitId,true)
@@ -67,10 +68,12 @@ function addRow(kit){
         updateGlobalDates(kit)
     }
     tabCell.onmouseover = function(){
-        this.style.background = "red"
+        trKit.style.textDecoration = 'line-through'
+        trKit.style.color = 'var(--my-color-rougeDaher)'
     }
     tabCell.onmouseout = function(){
-        this.style.background = null
+        trKit.style.textDecoration = 'none'
+        trKit.style.color = ''
     }
     trKit.appendChild(tabCell)
     trKit.onmouseover = function(){
