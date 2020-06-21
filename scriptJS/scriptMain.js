@@ -16,11 +16,20 @@ var divScan = document.getElementById("divScan")
 var btnEdit = document.getElementById('edit')
 btnEdit.addEventListener('click', editMoldingMode)
 var title = document.getElementById('title')
+var btnManual = document.getElementById("btnManuel")
+btnManual.onclick = function(){
+    btnOff(btnScan)
+    btnOn(btnManual)
+    divManu.style.display ='flex'
+}
+divMessage = document.createElement('div')
+divMessage.innerHTML = 'SCAN ACTIF'
+divMessage.classList.add('quick-msg')
 
 initNewMolding()
 
 function initNewMolding(){
-    startTimer()
+    //startTimer()
     divDay.innerHTML = "Date de moulage : " + dateToday.getDate() + "/" + (dateToday.getMonth()+1) + "/" + dateToday.getFullYear()
     console.log("Nouveau Moulage lancé")
     if(mywindow){
@@ -38,9 +47,10 @@ function addKitManualMode() {
     if (!manuKitDesArticle.value == 0 &&
         !manuKitArticleSap.value == 0 && 
         !manuKitWorkOrder.value == 0 && 
-        !manuKitDate18.value == 0 && 
+        isValidDate(manuKitDate18.value) && 
         !manuKitDateDra.value == 0 && 
         !manuKitDatePol.value == 0){
+
             var manuKit = new Kit(manuKitArticleSap.value, manuKitDesArticle.value,manuKitWorkOrder.value,new Date(manuKitDate18.value),new Date(manuKitDateDra.value),new Date(manuKitDatePol.value))
             afterNewKitActions(manuKit)
             manuKitArticleSap.value = ""
@@ -49,6 +59,8 @@ function addKitManualMode() {
             manuKitDate18.value = ""
             manuKitDateDra.value = ""
             manuKitDatePol.value = ""
+            divManu.style.display = 'none'
+            btnOff(btnManual)
     }else{
         alert('Veuiller remplir correctement tous les champs !!')
     }
@@ -74,12 +86,15 @@ if($inputKit){
     //$inputKit.addEventListener('input', scanAction);
 }
 function exitFocusScanAction(){
-    btnScan.style.backgroundColor = "red";
+    btnOff(btnScan)
 }
 function focusScanAction(){
-    btnScan.style.backgroundColor = "green";
+    btnOn(btnScan)
 }
 function focusTxtArea(){
+    btnOff(btnManual)
+    btnOn(btnScan)
+    divManu.style.display = 'none'
     $inputKit.focus()
 }
 function exitFocusTxtArea(){
@@ -280,4 +295,12 @@ function showKits(idMoulage){
     }                     
     xmlhttp.send()
     console.log("Affichage des kits à modifier")
+}
+function btnOn(btn){
+    btn.classList.add('bouton-on')
+    btn.classList.remove('bouton-off')
+}
+function btnOff(btn){
+    btn.classList.remove('bouton-on')
+    btn.classList.add('bouton-off')
 }

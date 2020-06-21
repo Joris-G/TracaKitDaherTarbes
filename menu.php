@@ -1,8 +1,7 @@
         <ul>
             <li class="menu-dropdown"><a href="#" class="dropbtn">Fichier</a>
                 <div class="dropdown-content">
-                    <a href="newMolding.php">Nouveau moulage</a>
-                    <a href="editMolding.php">Modifier moulage</a>
+                    <a href="newMolding.php">Moulage</a>
                     <a href="newTool.php">Créer un outillage</a>
                     <a href="newPart.php">Ajouter une pièce</a>
                 </div>

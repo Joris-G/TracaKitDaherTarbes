@@ -20,11 +20,7 @@
 }
 #divScan{
     display: none;
-
     margin: 10px;
-}
-#divManu{
-    display : none;
 }
 .hidden {
     position: absolute;
@@ -45,10 +41,7 @@
     font-size: 13px;
 }
 
-#btnScan{
-    border: 0px solid black;
-    border-radius: 10px;
-}
+
 
 
 #impression{

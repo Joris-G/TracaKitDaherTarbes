@@ -2,11 +2,16 @@
 require '../Connexion.php';
 $con = new Connexion();
 $sql = '    UPDATE `t_moulage` 
-            SET numOT = :toolNumber, dateLimDrap = :dateLimDra, dateLimPol = :dateLimPol,dateLim18 = :dateLim18 
+            SET numOT = :toolNumber, 
+            dateLimDrap = :dateLimDra, 
+            dateLimPol = :dateLimPol,
+            dateLim18 = :dateLim18,
+            DATE_DE_MODIFICATION = :dateMod 
             WHERE ID = :moldingId';
 $moulage = $con->createQuery($sql, [    'moldingId'=> $_GET['moldingID'],
                                         'toolNumber'=> $_GET['tool'], 
                                         'dateLimDra'=> $_GET['dateDra'], 
                                         'dateLimPol'=> $_GET['datePol'], 
-                                        'dateLim18'=> $_GET['date18']]);
+                                        'dateLim18'=> $_GET['date18'],
+                                        'dateMod'=>$_GET['dateMod']]);
 ?>

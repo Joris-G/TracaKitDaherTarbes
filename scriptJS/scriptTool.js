@@ -53,13 +53,11 @@ class LaunchScan{
                 divToolChoice.style.display='none'
                 divKitTable.style.display=''
                 divScan.style.display = 'block'
-                divManu.style.display = 'inline-block'
                 console.log("Outillage modifié !")
                 break
             case "Nou":
                 divToolChoice.style.display = 'none'
                 divScan.style.display = 'block'
-                divManu.style.display = 'inline-block'
                 $inputKit.focus()
                 //Test si une table existe                
                 if (idKitTable.length>0){

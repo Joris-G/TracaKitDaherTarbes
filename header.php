@@ -16,4 +16,4 @@ if(empty($_SESSION['username'])){
 </head>
 <body>
 <div class='perso-body'>
-<div class='header menu'><?php include ('menu.php')?></div>
+<div class='header'><?php include ('menu.php')?></div>

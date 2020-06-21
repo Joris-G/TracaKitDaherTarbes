@@ -22,8 +22,10 @@ function saveMolding(molding) {
 	var xmlhttp = new XMLHttpRequest()
 	switch (title.innerText.substr(0,3)){
         case "Mod":
+			modifDate = new Date()
+			modifDate = modifDate.toISOString().slice(0, 19).replace('T', ' ')
 			console.log(idMoldingToEdit)
-			xmlhttp.open("GET",'../scriptPhp/updateMoldingScript.php?moldingID=' + idMoldingToEdit + '&tool=' + molding.toolNum + '&date18=' + molding.dateLim18.toISOString().slice(0, 19).replace('T', ' ') + '&datePol=' + molding.dateLimPol.toISOString().slice(0, 19).replace('T', ' ') + '&dateDra=' + molding.dateLimDra.toISOString().slice(0, 19).replace('T', ' '),false);
+			xmlhttp.open("GET",'../scriptPhp/updateMoldingScript.php?moldingID=' + idMoldingToEdit + '&tool=' + molding.toolNum + '&date18=' + molding.dateLim18.toISOString().slice(0, 19).replace('T', ' ') + '&datePol=' + molding.dateLimPol.toISOString().slice(0, 19).replace('T', ' ') + '&dateDra=' + molding.dateLimDra.toISOString().slice(0, 19).replace('T', ' ') + '&dateMod=' + modifDate,false);
 			xmlhttp.onload = () => {
 				if (xmlhttp.status >= 200 && xmlhttp.status < 400){
 					console.log("Moulage modifié !")
