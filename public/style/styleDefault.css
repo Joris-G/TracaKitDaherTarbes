@@ -79,9 +79,6 @@ body{
   flex-direction: column;
   justify-content: start;
 }
-.molding div{
-  margin: 10px;
-}
 .title{
   font-size : 30px;
   text-align: center;
@@ -108,11 +105,9 @@ body{
   border: 0px solid black;
   border-radius: 10px;
 }
-.displaynone{
-  display:none;
-}
 #divManu{
   flex-direction: row;
+  flex-wrap: wrap;
 }
 
 #titreInfoMoulage{
@@ -139,6 +134,7 @@ tfoot *{
 }
 th, td {
   padding: 0px;
+  width: 80px;
 }
 .bouton-on{
   background: var(--my-color-green);
@@ -162,4 +158,19 @@ th, td {
   visibility: hidden;
   opacity: 0;
   transition: visibility 0s 3s, opacity 3s linear;
+}
+#articleSap{
+  width: 70px;
+}
+#workOrder{
+  width: 80px;
+}
+#desArticle{
+  width: 100px;
+}
+.lblInput{
+  margin: 3px;
+}
+#pickerDate18,#pickerDateDra,#pickerDatePol{
+  width: 200px;
 }

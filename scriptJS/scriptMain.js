@@ -234,6 +234,13 @@ divTool.onmouseover = function(){
   }
   var idMoldingToEdit
   function editMoldingMode(){
+      var tableau = document.getElementById('tableKit')
+    if(tableau.hasChildNodes()){
+        var childs = tableau.childNodes
+        childs.forEach(element => {
+            tableau.removeChild(element)
+        });
+    }
       //Message au chargement de la page
     idMoldingToEdit = prompt("Veuiller entrer le numéro de moulage à modifier", "")
 //Si l'id de moulage est vide ou null retourne sur la page d'index

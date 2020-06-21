@@ -22,7 +22,7 @@
             <input class="bouton" type="button" id="btnScan" value="SCAN"></button>
             <input class="bouton" type="button" id="btnManuel" value="MANUEL"></button>
         </div>
-        <div class='displaynone' id ="divManu">
+        <div id ="divManu" style="display: none;">
             <div class="title2">Ajout manuel d'un kit</div>
             <div class="lblInput">
                 <label for="articleSap">Article SAP</label>
