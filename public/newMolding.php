@@ -4,28 +4,28 @@
 <div class="content">
     <div class='sideBar-left'>
         <div class='sideBar-content'>
-            <div class='sideBar-title' id="titreInfoMoulage">Info moulage :</div>
-                <div class ='sideBar-item' id='day'></div>
-                <div class ='sideBar-item' id='worker'>Nom : <?php echo $_SESSION['username']; ?></div>
-                <div class ='sideBar-item' id='moldingTool'></div>
-                <div class ='sideBar-item' id='numberOfPart'></div>
-                <div class ='sideBar-item' id='numberOfMissingPart'>Pièce(s) manquante(s)</div>
+            <div class ='sideBar-title' id="titreInfoMoulage">Info moulage :</div>
+            <div class ='sideBar-item' id='day'></div>
+            <div class ='sideBar-item' id='worker'>Nom : <?php echo $_SESSION['username']; ?></div>
+            <div class ='sideBar-item' id='moldingTool'>
+                <div id='toolNumber'></div> 
+                <img id="editToolIcone" width="20" height="20" src="src/img/crayon_daher_blanc-03.png" alt="image">  
+            </div>
+            <div class ='sideBar-item' id='numberOfPart'></div>
+            <div class ='sideBar-item' id='numberOfMissingPart'></div>
         </div>
     </div>
-    <div class="molding">
+    <div class="center-content">
         <div class='title' id="title">Nouveau moulage</div>
         <div class='toolChoice' id="toolChoice">
             <?php include ('../toolChoice.php') ?>
         </div>
-        <div class='scan' id="divScan">
+        <div class='addKit' id="divScan">
             <textarea class='hidden' id='kitInput' onkeypress="return scanAction(event)"></textarea>
-            <input type="button" id="btnScan" value="SCAN ACTIF"></button>
+            <input class="bouton" type="button" id="btnScan" value="SCAN"></button>
+            <input class="bouton" type="button" id="btnManuel" value="MANUEL"></button>
         </div>
-        
-            <?php include ('../kitTable.php') ?>
-
-        <!-- Ajouter un kit en manuel -->
-        <div class='forms' id ="divManu">
+        <div id ="divManu" style="display: none;">
             <div class="title2">Ajout manuel d'un kit</div>
             <div class="lblInput">
                 <label for="articleSap">Article SAP</label>
@@ -55,12 +55,16 @@
             <input id="btnAddKitManualMode" type="button" name="btnAddKit" value="AJOUTER">
             </div>
         </div>
+            <?php include ('../kitTable.php') ?>
+
+        <!-- Ajouter un kit en manuel -->
+        
     </div>
     <div class='sideBar-right'>
         <div class='sideBar-content'>
             <div class='sideBar-title' id="titreInfoMoulage">FONCTIONS</div>
-                <div class ='sideBar-item' id='edit'>Editer un moulage</div>
-                <div class ='sideBar-item' id='search'>Rechercher un moulage existant</div>
+                <div class ='sideBar-item menu' id='edit'>Editer un moulage</div>
+                <div class ='sideBar-item menu' id='search'>Recherche</div>
         </div>
     </div>
 </div>   

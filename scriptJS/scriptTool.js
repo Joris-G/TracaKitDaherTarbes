@@ -34,6 +34,7 @@ class LinkedSelectTools{
 }
 var toolSap;
 var divToolChoice = document.getElementById("toolChoice")
+var divToolNumber = document.getElementById('toolNumber')
 class LaunchScan{
     
     constructor($select)  {
@@ -46,20 +47,20 @@ class LaunchScan{
         var liste = document.getElementById("tool")
         toolSap = liste.options[liste.selectedIndex].value
         numberOfPart = liste.options[liste.selectedIndex].id
-        moldingTool.innerHTML = "Outillage : OT0" + toolSap
+        console.log(numberOfPart)
+        divTool.style.display = 'flex'
+        divToolNumber.innerHTML = "Outillage : OT0" + toolSap
         switch (title.innerText.substr(0,3)){
             case "Mod":
                 editTool(idMoldingToEdit, toolSap)
                 divToolChoice.style.display='none'
                 divKitTable.style.display=''
                 divScan.style.display = 'block'
-                divManu.style.display = 'inline-block'
                 console.log("Outillage modifié !")
                 break
             case "Nou":
                 divToolChoice.style.display = 'none'
                 divScan.style.display = 'block'
-                divManu.style.display = 'inline-block'
                 $inputKit.focus()
                 //Test si une table existe                
                 if (idKitTable.length>0){

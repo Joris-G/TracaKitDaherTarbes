@@ -8,6 +8,7 @@
   --my-color-bleuDaher2 : rgb(0,13,36);
   --my-color-rougeDaher: rgb(230,0,50);
   --my-color-whiteFont : rgb(255,255,255);
+  --my-color-green : rgb(19, 170, 65);
 
   --my-font-daher : 'Raleway';
 
@@ -25,7 +26,7 @@ body{
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  overflow: hidden;
+  overflow: auto;
 }
 .perso-body {
   display:flex;
@@ -45,32 +46,40 @@ body{
 .sideBar-left{
   order: -1;
   height: 100%;
-  min-width: 280px;
+  min-width: 155px;
+  max-width: 250px;
   background: rgba(0,13,36,0.5);
 }
 .sideBar-right{
   order: 2;
   height: 100%;
-  min-width: 280px;
+  min-width: 150px;
+  max-width: 200px;
   background: rgba(0,13,36,0.5);
 }
 .sideBar-content{
-  font-size: 15px;
+  font-size: 12px;
   margin : 10px;
 }
 .sideBar-title{
-  margin: 5px;
+  margin: 0px;
 }
 .sideBar-item{
-  margin-left: 20px;
+  display: flex;
+  flex-direction: row;
+  padding: 10px 0px;
+  text-indent: 20px;
 }
-.molding{
+.sideBar-item.menu{
+  border-bottom: medium solid var(--my-color-whiteFont);
+}
+.menu:hover{
+  background: var(--my-color-rougeDaher);
+}
+.center-content{
   display: flex;
   flex-direction: column;
-  justify-content: start;
-}
-.molding div{
-  margin: 10px;
+  justify-content: left;
 }
 .title{
   font-size : 30px;
@@ -79,28 +88,29 @@ body{
 .title2{
   text-decoration: underline;
 }
-@media only screen and (max-width: 764px) {
-	.forms {
-    display: flex;
-    flex-direction: row; 
-  }
-}
-.forms{
-  display: flex;
-  flex-direction: row;
-}
 .kitTable{
+  font-size: 12px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-align : center;
   backdrop-filter: brightness(60%);
 }
-
-
-
-
-
+.rowKit{
+  height: 30px;
+}
+.rowKit:hover{
+  font-weight: bolder;
+  background: var(--my-color-bleuDaher2) ;
+}
+.bouton{
+  border: 0px solid black;
+  border-radius: 10px;
+}
+#divManu{
+  flex-direction: row;
+  flex-wrap: wrap;
+}
 
 #titreInfoMoulage{
   text-decoration: underline;
@@ -113,14 +123,81 @@ align-items: center;
 }
 
 .cellInvisible{
+  opacity: 0;
+}
+tfoot *{
+  height: 30px;
+  font-weight: bold;
+  background: rgba(255,255,255,0.5);
+  color: var(--my-color-bleuDaher2);
+}
+.redhover:hover{
+  background: var(--my-color-rougeDaher);
+}
+th:last-child, td:last-child {
+  padding: 0px;
+  width: 20px;
+}
+th:first-child, td:first-child {
+  padding: 0px;
+  width: 60px;
+}
+th:nth-child(3), td:nth-child(3) {
+  padding: 0px;
+  width: 80px;
+}
+th, td {
+  padding: 0px;
+  width: 170px;
+}
+.bouton-on{
+  background: var(--my-color-green);
+}
+.bouton-off{
+  background: var(--my-color-rougeDaher);
+}
+.quick-msg{
+  position: absolute; /* postulat de départ */
+  top: 50%; left: 50%; /* à 50%/50% du parent référent */
+  font-size: 100px;
+  margin: 0 auto;
+  width: 100px; 
+}
+.apparait {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 2s linear;
+}
+.disparait {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 3s, opacity 3s linear;
+}
+#articleSap{
+  width: 70px;
+}
+#workOrder{
+  width: 80px;
+}
+#desArticle{
+  width: 100px;
+}
+.lblInput{
+  margin: 3px;
+}
+#pickerDate18,#pickerDateDra,#pickerDatePol{
+  width: 200px;
+}
+.editToolIcone{
+  display: none;
+  width: 10px;
+}
+#moldingTool{
   display: none;
 }
-
-.kitTable > tfoot{
-  margin-top: 30px;
-}
-tfoot td{
-  height: 150px;
-  font-weight: bold;
-  color: cyan;
+#qrcode{
+  padding: 10px;
+  align-self: center;
+  background-color: white;
+  width: 80px;
 }

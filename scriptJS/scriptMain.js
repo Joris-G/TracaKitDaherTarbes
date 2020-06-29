@@ -16,11 +16,20 @@ var divScan = document.getElementById("divScan")
 var btnEdit = document.getElementById('edit')
 btnEdit.addEventListener('click', editMoldingMode)
 var title = document.getElementById('title')
+var btnManual = document.getElementById("btnManuel")
+btnManual.onclick = function(){
+    btnOff(btnScan)
+    btnOn(btnManual)
+    divManu.style.display ='flex'
+}
+divMessage = document.createElement('div')
+divMessage.innerHTML = 'SCAN ACTIF'
+divMessage.classList.add('quick-msg')
 
 initNewMolding()
 
 function initNewMolding(){
-    startTimer()
+    //startTimer()
     divDay.innerHTML = "Date de moulage : " + dateToday.getDate() + "/" + (dateToday.getMonth()+1) + "/" + dateToday.getFullYear()
     console.log("Nouveau Moulage lancé")
     if(mywindow){
@@ -38,9 +47,10 @@ function addKitManualMode() {
     if (!manuKitDesArticle.value == 0 &&
         !manuKitArticleSap.value == 0 && 
         !manuKitWorkOrder.value == 0 && 
-        !manuKitDate18.value == 0 && 
+        isValidDate(manuKitDate18.value) && 
         !manuKitDateDra.value == 0 && 
         !manuKitDatePol.value == 0){
+
             var manuKit = new Kit(manuKitArticleSap.value, manuKitDesArticle.value,manuKitWorkOrder.value,new Date(manuKitDate18.value),new Date(manuKitDateDra.value),new Date(manuKitDatePol.value))
             afterNewKitActions(manuKit)
             manuKitArticleSap.value = ""
@@ -49,6 +59,8 @@ function addKitManualMode() {
             manuKitDate18.value = ""
             manuKitDateDra.value = ""
             manuKitDatePol.value = ""
+            divManu.style.display = 'none'
+            btnOff(btnManual)
     }else{
         alert('Veuiller remplir correctement tous les champs !!')
     }
@@ -74,12 +86,15 @@ if($inputKit){
     //$inputKit.addEventListener('input', scanAction);
 }
 function exitFocusScanAction(){
-    btnScan.style.backgroundColor = "red";
+    btnOff(btnScan)
 }
 function focusScanAction(){
-    btnScan.style.backgroundColor = "green";
+    btnOn(btnScan)
 }
 function focusTxtArea(){
+    btnOff(btnManual)
+    btnOn(btnScan)
+    divManu.style.display = 'none'
     $inputKit.focus()
 }
 function exitFocusTxtArea(){
@@ -96,7 +111,6 @@ function scanAction (event){
         $inputKit.value = ''
         window.setTimeout(focusTxtArea(), 3000)
     }
-    console.log("Scan effectué")
 }
 function afterNewKitActions(kit){
     changeName(kit)
@@ -166,8 +180,23 @@ function imprimer_page(elem, OT){
     var nodeToCopy = document.getElementById('tableKit').innerHTML
     mywindow = window.open("../public/printSheet.php","Fiche synthèse traçabilité")
     mywindow.onload = function() {
-    mywindow.document.getElementById('tableauRecap2').innerHTML = nodeToCopy      
+    mywindow.document.getElementById('tableauRecap2').innerHTML = nodeToCopy
+    var copiedTable = mywindow.document.getElementById('tableauRecap2')     
+//Supprimer la colonne du bouton
+console.log(copiedTable)
+var oTbody = copiedTable.tBodies
+console.log(oTbody)
+var oNbTbody = oTbody.length
+console.log(oNbTbody)
+var iIndex = 6
 
+for(var i = 0; i<oNbTbody;i++){
+    var aTr = oTbody[i].children, iNbTr = aTr.length
+    for(var h = 0;h<iNbTr;h++){
+        console.log(aTr[h].children[iIndex])
+        aTr[h].children[iIndex].remove()
+    }
+}
     var dateToday = new Date()
     var dateString = 'Date d\'enregistrement : ' + dateToday.getDate() + '/' + (dateToday.getMonth()+1) + '/' + dateToday.getFullYear() ;
     var tool = 'Outillage : OT0' + toolSap
@@ -182,11 +211,9 @@ function imprimer_page(elem, OT){
     divMoldingId.innerHTML = moldingId
     setTimeout(function() {
         mywindow.print()
+        window.location.href="../public/index.php"
       }, 100);
-    //mywindow = window.close()
-}
-    
-    //window.location.href="../public/index.php"
+}   
     console.log("Les actions suivantes ont été effectuée : Impression effectué, enregistrement du moulage, association du numéro de moulage à tous les kits")
 }
 function CheckDataIndex(Chaine,TbIndex,Sep){
@@ -219,6 +246,13 @@ divTool.onmouseover = function(){
   }
   var idMoldingToEdit
   function editMoldingMode(){
+      var tableau = document.getElementById('tableKit')
+    if(tableau.hasChildNodes()){
+        var childs = tableau.childNodes
+        childs.forEach(element => {
+            tableau.removeChild(element)
+        });
+    }
       //Message au chargement de la page
     idMoldingToEdit = prompt("Veuiller entrer le numéro de moulage à modifier", "")
 //Si l'id de moulage est vide ou null retourne sur la page d'index
@@ -229,6 +263,9 @@ divTool.onmouseover = function(){
     }
     console.log("Lancement du mode modification de moulage")
   }
+  
+var divToolNumber = document.getElementById('toolNumber')
+
 function displayEditingMolding(){
     divToolChoice.style.display ='none'
     divScan.style.display = 'block'
@@ -245,7 +282,9 @@ function displayEditingMolding(){
         if (xmlhttp.status >= 200 && xmlhttp.status < 400){
             var dataMolding = JSON.parse(xmlhttp.responseText)
             toolSap = dataMolding[0]['Outillage']
-            divTool.innerHTML = "Outillage : OT0" + toolSap
+            
+            divToolNumber.innerHTML = "Outillage : OT0" + toolSap
+            document.getElementById('editToolIcone').style.display= 'flex'
             if(divKitTable.childNodes.length == 0){
                 showKits(idMoldingToEdit)
             }
@@ -280,4 +319,12 @@ function showKits(idMoulage){
     }                     
     xmlhttp.send()
     console.log("Affichage des kits à modifier")
+}
+function btnOn(btn){
+    btn.classList.add('bouton-on')
+    btn.classList.remove('bouton-off')
+}
+function btnOff(btn){
+    btn.classList.remove('bouton-on')
+    btn.classList.add('bouton-off')
 }

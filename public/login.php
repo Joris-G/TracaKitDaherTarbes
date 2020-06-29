@@ -10,14 +10,19 @@
         <div id="title">AUTHENTIFICATION</div>
     
         <form id="form" action="authentification.php" method="post" name="login">
-            <div>
+            <!-- <div>
                 <label for="user">Entrer votre nom :</label>
                 <input type="text" id="user" name="username" required>
+            </div> -->
+            <div>
+                <label for="login">Sanner votre badge pour vous identifier</label>
+                <textarea class='hidden' id='login' name='username' onkeypress="return loginAction(event)" required></textarea>
             </div>
             <div class="button">
-                <button type="submit">CONNECTION</button>
+                <button id='submit' type="submit">CONNECTION</button>
             </div>
         </form>
     </div>
+    <script src="../scriptJS/login.js"></script>
 </body>
 </html>

@@ -14,10 +14,10 @@ if (!$con) {
   die('Could not connect: ' . mysqli_error($con));
 }
 //Penser à remplacer la valeur $articleSap avec son index ARTICLE_SAP et rajouter index DESIGNATION
-$sql="INSERT INTO `t_kit`(`OF`, `ARTICLE_SAP`, `DESIGNATION`, `OT`, `DATE_DRAPAGE`, `DATE_POLYM`, `DATE_-18`) 
-VALUES (:of, :article, :designation, :ot, :dateDra, :datePol, :date18)";
+$sql="INSERT INTO `t_kit`(`OF`, `ARTICLE_SAP`, `DESIGNATION`, `DATE_DRAPAGE`, `DATE_POLYM`, `DATE_-18`) 
+VALUES (:of, :article, :designation, :dateDra, :datePol, :date18)";
 
-$kits = $con->createQuery($sql, ['of'=>$of, 'article'=>$articleSap, 'designation'=>$designation, 'ot'=>$outillage, 'dateDra'=>$dateDra, 
+$kits = $con->createQuery($sql, ['of'=>$of, 'article'=>$articleSap, 'designation'=>$designation, 'dateDra'=>$dateDra, 
 'datePol'=>$datePol, 'date18'=>$date18,]);
 
 $idKit = $con->lastId();
