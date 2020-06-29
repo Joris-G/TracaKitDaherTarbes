@@ -4,15 +4,18 @@
 <div class="content">
     <div class='sideBar-left'>
         <div class='sideBar-content'>
-            <div class='sideBar-title' id="titreInfoMoulage">Info moulage :</div>
-                <div class ='sideBar-item' id='day'></div>
-                <div class ='sideBar-item' id='worker'>Nom : <?php echo $_SESSION['username']; ?></div>
-                <div class ='sideBar-item' id='moldingTool'></div>
-                <div class ='sideBar-item' id='numberOfPart'></div>
-                <div class ='sideBar-item' id='numberOfMissingPart'></div>
+            <div class ='sideBar-title' id="titreInfoMoulage">Info moulage :</div>
+            <div class ='sideBar-item' id='day'></div>
+            <div class ='sideBar-item' id='worker'>Nom : <?php echo $_SESSION['username']; ?></div>
+            <div class ='sideBar-item' id='moldingTool'>
+                <div id='toolNumber'></div> 
+                <img id="editToolIcone" width="20" height="20" src="src/img/crayon_daher_blanc-03.png" alt="image">  
+            </div>
+            <div class ='sideBar-item' id='numberOfPart'></div>
+            <div class ='sideBar-item' id='numberOfMissingPart'></div>
         </div>
     </div>
-    <div class="molding">
+    <div class="center-content">
         <div class='title' id="title">Nouveau moulage</div>
         <div class='toolChoice' id="toolChoice">
             <?php include ('../toolChoice.php') ?>

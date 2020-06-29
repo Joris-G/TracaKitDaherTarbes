@@ -34,6 +34,7 @@ class LinkedSelectTools{
 }
 var toolSap;
 var divToolChoice = document.getElementById("toolChoice")
+var divToolNumber = document.getElementById('toolNumber')
 class LaunchScan{
     
     constructor($select)  {
@@ -46,7 +47,9 @@ class LaunchScan{
         var liste = document.getElementById("tool")
         toolSap = liste.options[liste.selectedIndex].value
         numberOfPart = liste.options[liste.selectedIndex].id
-        moldingTool.innerHTML = "Outillage : OT0" + toolSap
+        console.log(numberOfPart)
+        divTool.style.display = 'flex'
+        divToolNumber.innerHTML = "Outillage : OT0" + toolSap
         switch (title.innerText.substr(0,3)){
             case "Mod":
                 editTool(idMoldingToEdit, toolSap)

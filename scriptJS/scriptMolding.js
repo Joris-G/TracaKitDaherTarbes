@@ -12,7 +12,7 @@ class Molding {
 	associateMoldingIdToKits(idKitTable,molding){
 		for (let index = 0; index < idKitTable.length; index++) {
 			var xmlhttp = new XMLHttpRequest()
-			xmlhttp.open("GET",'../scriptPhp/associateMoldingToKitScript.php?kitId=' + idKitTable[index] + '&moldingId=' + molding.idMolding,true)
+			xmlhttp.open("GET",'../scriptPhp/associateMoldingToKitScript.php?kitId=' + idKitTable[index] + '&moldingId=' + molding.idMolding + '&toolNumber='+ molding.toolNum,true)
 			xmlhttp.send()
 			console.log("Kit " + idKitTable[index] + " est associé avec le moulage " + molding.idMolding)
 		}

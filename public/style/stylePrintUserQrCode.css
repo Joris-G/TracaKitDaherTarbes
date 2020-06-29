@@ -1,0 +1,22 @@
+#divContent{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    font-size: 8px;
+}
+.user{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    width: 120px;
+    overflow: hidden;
+    border: 1px solid black;
+
+}
+.name{
+    padding: 5px 0px;
+    border-bottom: 1px dashed black;
+}
+.qrCode{
+    margin: 10px;
+}

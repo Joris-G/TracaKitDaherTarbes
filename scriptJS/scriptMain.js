@@ -111,7 +111,6 @@ function scanAction (event){
         $inputKit.value = ''
         window.setTimeout(focusTxtArea(), 3000)
     }
-    console.log("Scan effectué")
 }
 function afterNewKitActions(kit){
     changeName(kit)
@@ -181,8 +180,23 @@ function imprimer_page(elem, OT){
     var nodeToCopy = document.getElementById('tableKit').innerHTML
     mywindow = window.open("../public/printSheet.php","Fiche synthèse traçabilité")
     mywindow.onload = function() {
-    mywindow.document.getElementById('tableauRecap2').innerHTML = nodeToCopy      
+    mywindow.document.getElementById('tableauRecap2').innerHTML = nodeToCopy
+    var copiedTable = mywindow.document.getElementById('tableauRecap2')     
+//Supprimer la colonne du bouton
+console.log(copiedTable)
+var oTbody = copiedTable.tBodies
+console.log(oTbody)
+var oNbTbody = oTbody.length
+console.log(oNbTbody)
+var iIndex = 6
 
+for(var i = 0; i<oNbTbody;i++){
+    var aTr = oTbody[i].children, iNbTr = aTr.length
+    for(var h = 0;h<iNbTr;h++){
+        console.log(aTr[h].children[iIndex])
+        aTr[h].children[iIndex].remove()
+    }
+}
     var dateToday = new Date()
     var dateString = 'Date d\'enregistrement : ' + dateToday.getDate() + '/' + (dateToday.getMonth()+1) + '/' + dateToday.getFullYear() ;
     var tool = 'Outillage : OT0' + toolSap
@@ -197,11 +211,9 @@ function imprimer_page(elem, OT){
     divMoldingId.innerHTML = moldingId
     setTimeout(function() {
         mywindow.print()
+        window.location.href="../public/index.php"
       }, 100);
-    //mywindow = window.close()
-}
-    
-    //window.location.href="../public/index.php"
+}   
     console.log("Les actions suivantes ont été effectuée : Impression effectué, enregistrement du moulage, association du numéro de moulage à tous les kits")
 }
 function CheckDataIndex(Chaine,TbIndex,Sep){
@@ -251,6 +263,9 @@ divTool.onmouseover = function(){
     }
     console.log("Lancement du mode modification de moulage")
   }
+  
+var divToolNumber = document.getElementById('toolNumber')
+
 function displayEditingMolding(){
     divToolChoice.style.display ='none'
     divScan.style.display = 'block'
@@ -267,7 +282,9 @@ function displayEditingMolding(){
         if (xmlhttp.status >= 200 && xmlhttp.status < 400){
             var dataMolding = JSON.parse(xmlhttp.responseText)
             toolSap = dataMolding[0]['Outillage']
-            divTool.innerHTML = "Outillage : OT0" + toolSap
+            
+            divToolNumber.innerHTML = "Outillage : OT0" + toolSap
+            document.getElementById('editToolIcone').style.display= 'flex'
             if(divKitTable.childNodes.length == 0){
                 showKits(idMoldingToEdit)
             }

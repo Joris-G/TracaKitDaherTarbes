@@ -36,8 +36,7 @@ body {
     font-size : 15px;
 }
 button{
-    border-radius: 5px;
-    
+    border-radius: 5px;  
   padding: 10px;
   text-align: center;
   border: solid 1px;
@@ -47,3 +46,11 @@ button{
   margin: 4px 2px;
   cursor: pointer;
 }
+.hidden{
+    position: absolute;
+    left: -10000em;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+ }

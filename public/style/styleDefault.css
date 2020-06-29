@@ -65,6 +65,8 @@ body{
   margin: 0px;
 }
 .sideBar-item{
+  display: flex;
+  flex-direction: row;
   padding: 10px 0px;
   text-indent: 20px;
 }
@@ -74,10 +76,10 @@ body{
 .menu:hover{
   background: var(--my-color-rougeDaher);
 }
-.molding{
+.center-content{
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: left;
 }
 .title{
   font-size : 30px;
@@ -132,9 +134,21 @@ tfoot *{
 .redhover:hover{
   background: var(--my-color-rougeDaher);
 }
-th, td {
+th:last-child, td:last-child {
+  padding: 0px;
+  width: 20px;
+}
+th:first-child, td:first-child {
+  padding: 0px;
+  width: 60px;
+}
+th:nth-child(3), td:nth-child(3) {
   padding: 0px;
   width: 80px;
+}
+th, td {
+  padding: 0px;
+  width: 170px;
 }
 .bouton-on{
   background: var(--my-color-green);
@@ -173,4 +187,17 @@ th, td {
 }
 #pickerDate18,#pickerDateDra,#pickerDatePol{
   width: 200px;
+}
+.editToolIcone{
+  display: none;
+  width: 10px;
+}
+#moldingTool{
+  display: none;
+}
+#qrcode{
+  padding: 10px;
+  align-self: center;
+  background-color: white;
+  width: 80px;
 }

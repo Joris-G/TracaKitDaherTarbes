@@ -1,11 +1,27 @@
-@import 'styleDefault.css';
+@font-face {
+	font-family: "Raleway";
+    src: url('../src/font/Raleway-Regular.ttf');
+}
 
+:root {
+  --my-color-bleuDaher: rgb(0,50,95);
+  --my-color-bleuDaher2 : rgb(0,13,36);
+  --my-color-rougeDaher: rgb(230,0,50);
+  --my-color-whiteFont : rgb(255,255,255);
+  --my-color-green : rgb(19, 170, 65);
+
+  --my-font-daher : 'Raleway';
+
+  --my-bg-image : url("../src/img/fond.jpg");
+}
 body{
-    background: none;
-    color : black;
-    margin: 0px;
-    padding: 0px;
-    font-family : var(--my-font-daher);
+  min-height: 100vh;
+  margin: 0px;
+  padding: 0px;
+  font-family : var(--my-font-daher);
+  font-size : 15px;
+  color : black;
+  overflow: auto;
 }
 #logoDaher{
     position: relative;
@@ -24,7 +40,7 @@ body{
 #tableauRecap2{
     border-spacing: 10px 5px;
     text-align : center;
-    margin : 0 auto;
+    margin : 0px;
 }
 
 #tableauRecap2 th{
@@ -40,3 +56,18 @@ tfoot > * {
 #tableauRecap2 tf td{
     font-size: 20px;
 }
+.cellInvisible{
+    display: none;
+}
+th:first-child, td:first-child {
+    padding: 0px;
+    width: 60px;
+  }
+  th:nth-child(3), td:nth-child(3) {
+    padding: 0px;
+    width: 80px;
+  }
+  th, td {
+    padding: 0px;
+    width: 250px;
+  }
