@@ -56,3 +56,9 @@
   .lblInput label{
     font-size : 13px;
   }
+  .path-1{
+    stroke : blue;
+  }
+  path{
+    stroke : red; 
+  }

@@ -1,9 +1,9 @@
 var username = document.getElementById('username').innerHTML
-var matricule = document.getElementById('matricule').innerHTML
+//var matricule = document.getElementById('matricule').innerHTML
 var btnPrintUser = document.getElementById('print')
 var btnPrintAllUsers = document.getElementById('printAll')
 var qrCodeDOM = document.getElementById("qrcode")
-var qrCode = new QRCode(qrCodeDOM,{
+/*var qrCode = new QRCode(qrCodeDOM,{
     text: matricule,
     width: 80,
     height: 80,
@@ -11,6 +11,7 @@ var qrCode = new QRCode(qrCodeDOM,{
     colorLight: "#ffffff",
     correctLevel : QRCode.CorrectLevel.L 
 })
+*/
 var printWindow
 var divContent = document.getElementById('content')
 
@@ -20,11 +21,20 @@ class User{
         this.surname = surname
         this.role = role
     }
-    displayUser() {
-
+}
+function getUser(matricule){
+    var xmlhttprequest = new XMLHttpRequest()
+    xmlhttprequest.open("GET",'../scriptPhp/getUserScript.php?matricule=' + matricule,true);
+    xmlhttprequest.send()
+    xmlhttprequest.onload = () => {
+        var result = JSON.parse(xmlhttprequest.responseText)
+        console.log(result)
+        var user = new User(result['NOM'],result['PRENOM'],result['ROLE'])
+        console.log(user)
+        return user
     }
 }
-btnPrintUser.addEventListener('click', function(){
+/*btnPrintUser.addEventListener('click', function(){
     var nodeToCopy = document.getElementById('qrcode')
     printWindow = window.open('../public/printUserQrCode.php',"QRCode",true)
     printWindow.onload = function(){
@@ -160,4 +170,4 @@ function printAll(){
         
         
     }
-}
+}*/

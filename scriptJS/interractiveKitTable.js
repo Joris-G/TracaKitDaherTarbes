@@ -1,4 +1,5 @@
 var tableKit = document.getElementById('tableKit')
+var divOprator = document.getElementById('operator')
 var tbody,thead,tfoot
 var dateFictive = new Date(2099,1,1)
 var date18LimTot = dateFictive
@@ -23,6 +24,7 @@ function createBody(tableDOM){
 }
 function addRow(kit){
     var thisKit = [
+        kit.validate,
         kit.refSap,
         kit.desArticle,
         kit.workOrder,
@@ -30,30 +32,28 @@ function addRow(kit){
         kit.layUpLimDate,
         kit.curingLimDate
     ]
-        expired(kit.curingLimDate)
-        expired(kit.shelfLifeDate)
-        expired(kit.layUpLimDate)
-
     var trKit = document.createElement('tr')//On créé la ligne du kit
     trKit.classList.add('rowKit')
     thisKit.forEach(element => {
         var tabCell = document.createElement("td")//On créé une cellule pour chaque valeur de kit       
-        if(isValidDate(element)){
+        if(typeof element !== "boolean" && isValidDate(element)){
             tabCell.innerHTML = displayKitDate(element)
             if(expired(element)){
                 alert("Le kit est périmé.\nVeuillez alerter un inspecteur qualité\n\nBientôt mail auto à l'inspecteur qualité")
                 tabCell.style.background = 'rgb(230,0,50)'
                 tabCell.style.borderRadius = '10px'
+                tabCell.addEventListener('click', function(){
+                    validateKit(kit)
+                })
             }
-        }else{
+        }else{ 
             tabCell.innerHTML = element//On rempli la cellule
         }
-        
         trKit.appendChild(tabCell)
         });
     var tabCell = document.createElement("td")//On créé une cellule pour chaque valeur de kit
     var image = new Image(30,25);
-    image.src = 'src/img/poub_daher_blanc-03'
+    image.src = 'src/img/poub_daher_blanc-03.png'
     tabCell.id = 'btn'
     tabCell.appendChild(image)
     tabCell.classList.add('cellInvisible','redhover')
@@ -76,16 +76,22 @@ function addRow(kit){
         trKit.style.color = ''
     }
     trKit.appendChild(tabCell)
+    if(kit.validate !== true){
+        trKit.firstChild.style.color ='red'
+    }else{
+        trKit.firstChild.style.color ='green'
+    }
+
     trKit.onmouseover = function(){
       var rowIdOverCell = this.rowIndex //var numéro de la ligne cliquée
       var overRow = tableKit.rows[rowIdOverCell]
-      var cellToDisplay = overRow.cells[6]
+      var cellToDisplay = overRow.lastChild
       cellToDisplay.classList.remove('cellInvisible')
     }
     trKit.onmouseout = function(){
       var rowIdOverCell = this.rowIndex //var numéro de la ligne cliquée
       var overRow = tableKit.rows[rowIdOverCell]
-      var cellToDisplay = overRow.cells[6]
+      var cellToDisplay = overRow.lastChild
       cellToDisplay.classList.add('cellInvisible')
     }
     tbody.appendChild(trKit)
@@ -95,7 +101,7 @@ function addRow(kit){
 function createHeader(tableDOM){
     var thead = document.createElement('thead')
     tableDOM.appendChild(thead)
-    var jsonHeader = ["Article", "Désignation", "Of", "Date péremption à -18°C", "Date limite de drapage", "Date limite de polymérisation"]
+    var jsonHeader = ["", "Article", "Désignation", "Of", "Date péremption à -18°C", "Date limite de drapage", "Date limite de polymérisation"]
 
   // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
   var tr = document.createElement('tr')                 // On créé une ligne pour le header.
@@ -110,7 +116,7 @@ function createHeader(tableDOM){
 }
 function updateGlobalDates(kit){
     if(idKitTable.length ==0 ){ //Si il n'y a plus de kit dans le tableau
-        //tableKit.removeChild(tfoot)
+        tableKit.removeChild(tfoot)
         tfDate18.innerHTML = ""
         tfDateDra.innerHTML = ""
         tfDatePol.innerHTML = ""
@@ -142,7 +148,7 @@ function createFooter(tableDOM){
     tfoot.id = 'tfoot'
     var tr = document.createElement('tr')                 // On créé une ligne pour le footer.
     var thFooter = document.createElement('th')
-    thFooter.setAttribute('colspan',3)
+    thFooter.setAttribute('colspan',4)
     thFooter.innerHTML = "Dates limites globales"
     tr.appendChild(thFooter)
 
@@ -166,4 +172,34 @@ function createFooter(tableDOM){
 function isValidDate(dateTest){
     var test = new Date(dateTest)
     return !isNaN(test.getDate());
+}
+
+function validateKit(kit){
+    divOprator.style.display = 'none'
+    var divQuality = document.getElementById('quality')
+    var divTitle = document.createElement('div')
+    divTitle.innerHTML = 'VALIDATION QUALITE'
+    divTitle.classList.add('title')
+    var divMessage = document.createElement('div')
+    divMessage.innerText = `Le kit ` + kit.desArticle + ` OF : ` + kit.workOrder + ` est périmé
+    \n\nDate de péremption à -18°C : ` + displayKitDate(kit.shelfLifeDate) +`
+    \nDate limite de drapage : ` + displayKitDate(kit.layUpLimDate) +`
+    \nDate limite de polymérisation : ` + displayKitDate(kit.curingLimDate)
+
+    divMessage.innerText += `\n\nVous êtes sur le point de valider l'utilisation d'un kit périmé.
+    \n\nVeuiller scanner votre badge pour vous identifier.`
+    divQuality.appendChild(divMessage)
+
+    divQuality.style.display='block'
+
+    var textboxHidden = document.createElement('input')
+    textboxHidden.type = 'text'
+    textboxHidden.classList.add('hidden')
+    divQuality.appendChild(textboxHidden)
+    textboxHidden.focus()
+    textboxHidden.onkeypress = function(event){
+        if (event.keyCode === 13) {
+        var user = getUser(textboxHidden.value)
+        }
+    }
 }

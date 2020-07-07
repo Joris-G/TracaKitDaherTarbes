@@ -15,7 +15,7 @@
                 <input type="text" id="user" name="username" required>
             </div> -->
             <div>
-                <label for="login">Sanner votre badge pour vous identifier</label>
+                <label for="login">Scanner votre badge pour vous identifier</label>
                 <textarea class='hidden' id='login' name='username' onkeypress="return loginAction(event)" required></textarea>
             </div>
             <div class="button">

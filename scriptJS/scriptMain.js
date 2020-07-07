@@ -17,6 +17,7 @@ var btnEdit = document.getElementById('edit')
 btnEdit.addEventListener('click', editMoldingMode)
 var title = document.getElementById('title')
 var btnManual = document.getElementById("btnManuel")
+
 btnManual.onclick = function(){
     btnOff(btnScan)
     btnOn(btnManual)
@@ -66,6 +67,10 @@ function addKitManualMode() {
     }
     console.log("Le kit a été créé manuellement")
 }
+/**
+ * 
+ * @param {kit} Objet kit 
+ */
 function displayKitOnTable(kit){
     if (!divKitTable.hasChildNodes()) {
         console.log("Le tableau va être créé car il n'existe pas")
@@ -121,12 +126,6 @@ function afterNewKitActions(kit){
     updateGlobalDates(kit)
     divNumberOfPart.innerHTML = "Nombre de kit scanné : " + idKitTable.length
     divNumberOfMissingPart.innerHTML = "Nombre de kit manquant : " + numberOfPart - idKitTable.length
-    console.log(`Les actions suivantes ont été réalisées : 
-    Changement de la désignation du kit, 
-    enregistrement du kit en bdd, 
-    ajout d'un kit dans le tableau virtuel,
-    affichage du kit dans le tableau,
-    mise a jour des dates de péremptions globales`)
 }
 function newKitByScan(){
     //Tableau des index de colonnes de la Fiche de Vie scanner, "RefSap : "
@@ -141,7 +140,6 @@ function newKitByScan(){
         var tableauTampon = tableauSplit[i].split(" : ");
         tableauRes[k] = tableauTampon[0];
         tableauRes[k + 1] = tableauTampon[1];
-        console.info(tableauTampon[0] + " || " + tableauTampon[1]);
         k = k + 2;
     }
     var date18 = new Date();
@@ -167,6 +165,7 @@ function newKitByScan(){
 
     var scanKit = new Kit(tableauRes[3],tableauRes[5],tableauRes[1],date18,dateDra,datePol)
     afterNewKitActions(scanKit)
+    console.log(scanKit)
     console.log("Le kit a été ajouté par le scanner")
 }
 function imprimer_page(elem, OT){

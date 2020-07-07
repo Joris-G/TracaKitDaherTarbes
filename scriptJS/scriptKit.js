@@ -1,13 +1,29 @@
 class Kit {
+  /**
+   * 
+   * @param {boolean} validate 
+   * @param {number} refSap 
+   * @param {string} desArticle 
+   * @param {string} workOrder 
+   * @param {Date} shelfLifeDate 
+   * @param {Date} layUpLimDate 
+   * @param {Date} curingLimDate 
+   * @param {number} kitId 
+   */
     constructor(refSap, desArticle, workOrder, shelfLifeDate, layUpLimDate, curingLimDate, kitId = 0) {
-        this.refSap = refSap
-        this.desArticle = desArticle
-        this.workOrder = workOrder
-        this.shelfLifeDate = shelfLifeDate
-        this.layUpLimDate = layUpLimDate
-        this.curingLimDate = curingLimDate
-        this.kitId = kitId
+      if(expired(shelfLifeDate) || expired(layUpLimDate) || expired(curingLimDate)){
+          this.validate = false
+      }else{
+          this.validate =  true
       }
+      this.refSap = refSap
+      this.desArticle = desArticle
+      this.workOrder = workOrder
+      this.shelfLifeDate = shelfLifeDate
+      this.layUpLimDate = layUpLimDate
+      this.curingLimDate = curingLimDate
+      this.kitId = kitId
+    }
     set refSap(ref){this._refSap = ref}
     get refSap(){return this._refSap}
 
